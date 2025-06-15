@@ -69,6 +69,12 @@ void Controller::processKeyboard(float delta)
 
 void Controller::processMouse()
 {
+	if (!_window->getWindowActive())
+	{
+		_firstMouse = true;
+		return;
+	}
+
 	GLFWwindow *win = _window->getGLFWwindow();
 
 	double xpos, ypos;

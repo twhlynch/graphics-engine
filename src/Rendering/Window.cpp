@@ -6,7 +6,8 @@
 
 #include <iostream>
 
-Window::Window(int width, int height, const std::string &title)
+Window::Window(int width, int height, const std::string &title) :
+	_window(nullptr), _windowActive(true)
 {
 	if (!glfwInit())
 	{
@@ -67,16 +68,29 @@ void Window::framebuffer_size_callback(GLFWwindow * /*window*/, int width, int h
 	glViewport(0, 0, width, height);
 }
 
-void Window::update() const
+void Window::update()
 {
 	glfwSwapBuffers(_window);
 	glfwPollEvents();
 
 	if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(_window, true);
-}
-
-GLFWwindow *Window::getGLFWwindow() const
-{
-	return _window;
+	{
+		_pressingEscape = true;
+	}
+	else
+	{
+		if (_pressingEscape)
+		{
+			_windowActive = !_windowActive;
+			if (_windowActive)
+			{
+				glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+			}
+			else
+			{
+				glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+			}
+		}
+		_pressingEscape = false;
+	}
 }

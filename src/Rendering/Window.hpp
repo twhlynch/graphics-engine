@@ -15,12 +15,21 @@ public:
 	void pollEvents() const;
 	void swapBuffers() const;
 	bool shouldClose() const;
-	void update() const;
+	void update();
 
-	GLFWwindow *getGLFWwindow() const;
+	GLFWwindow *getGLFWwindow() const
+	{
+		return _window;
+	}
+	bool getWindowActive() const
+	{
+		return _windowActive;
+	}
 
 private:
 	static void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
 	GLFWwindow *_window;
+	bool _windowActive;
+	bool _pressingEscape;
 };
