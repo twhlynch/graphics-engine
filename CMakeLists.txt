@@ -4,6 +4,8 @@ project(Renderer C CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 add_compile_options(-Wall -Wextra -Wpedantic -Werror)
 
 find_package(OpenGL REQUIRED)
@@ -30,15 +32,17 @@ add_executable(Renderer
 )
 
 target_link_libraries(Renderer
-	glad_c
 	${OPENGL_LIBRARIES}
 	glfw
 	glm::glm
+	glad_c
 )
 
-add_custom_command(TARGET Renderer POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:Renderer>/assets
+add_custom_target(assets
 	COMMAND ${CMAKE_COMMAND} -E copy_directory
-			${CMAKE_SOURCE_DIR}/assets
-			$<TARGET_FILE_DIR:Renderer>/assets
+		${CMAKE_CURRENT_SOURCE_DIR}/assets
+		${CMAKE_BINARY_DIR}/assets
+	COMMENT "Copying assets to the build directory"
 )
+
+add_dependencies(Renderer assets)
