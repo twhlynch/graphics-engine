@@ -12,7 +12,9 @@ Camera::Camera(float fov, float aspect, float nearPlane, float farPlane) :
 	_upDirection = Vector3(0, 1, 0);
 
 	if (std::abs(forward.y) > 0.99f)
+	{
 		_upDirection = Vector3(0, 0, (forward.y > 0) ? -1.0f : 1.0f);
+	}
 }
 
 void Camera::setPosition(const Vector3 &position)
@@ -28,7 +30,9 @@ void Camera::setTarget(const Vector3 &target)
 	Vector3 worldUp = Vector3(0, 1, 0);
 
 	if (std::abs(forward.y) > 0.99f)
+	{
 		worldUp = Vector3(0, 0, 1);
+	}
 
 	Vector3 right = forward.cross(worldUp).normalized();
 	_upDirection = right.cross(forward).normalized();

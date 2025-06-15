@@ -12,19 +12,31 @@ Entity::Entity(Mesh *mesh, Material *material, Shader *shader) :
 	_mesh(nullptr), _material(nullptr), _shader(nullptr), _scale(1.0f)
 {
 	if (mesh)
+	{
 		_mesh = mesh;
+	}
 	else
+	{
 		WARN("Invalid mesh");
+	}
 
 	if (material)
+	{
 		_material = material;
+	}
 	else
+	{
 		WARN("Invalid material");
+	}
 
 	if (shader)
+	{
 		_shader = shader;
+	}
 	else
+	{
 		WARN("Invalid shader");
+	}
 }
 
 void Entity::setPosition(const Vector3 &position)
@@ -94,7 +106,9 @@ void Entity::draw()
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 	}
 	else
+	{
 		WARN("'model' uniform not found in shader.");
+	}
 
 	_material->draw(_mesh, _shader);
 }

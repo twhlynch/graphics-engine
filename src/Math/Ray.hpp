@@ -3,7 +3,6 @@
 #include "../Math/Vector3.hpp"
 #include "../Rendering/Entity.hpp"
 
-#include <memory>
 #include <vector>
 
 class Intersection

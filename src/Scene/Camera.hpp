@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../Math/Quaternion.hpp"
 #include "../Math/Vector3.hpp"
 
 #include <glm/glm.hpp>

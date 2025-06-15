@@ -141,7 +141,9 @@ public:
 		float len = length();
 
 		if (len <= FLT_EPSILON)
+		{
 			x = y = z = 0.0f;
+		}
 		else
 		{
 			float factor = l * (1.0f / len);

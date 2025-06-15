@@ -42,7 +42,9 @@ void Material::draw(Mesh *mesh, Shader *shader)
 
 		GLint texLoc = glGetUniformLocation(shader->getProgramID(), "tex");
 		if (texLoc != -1)
+		{
 			glUniform1i(texLoc, 0);
+		}
 	}
 
 	glBindVertexArray(mesh->_VAO);

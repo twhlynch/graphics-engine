@@ -7,9 +7,13 @@ Mesh::Mesh(const std::vector<float> vertices, const std::vector<float> colors, c
 {
 	_vertexCount = _vertices.size() / 3;
 	if (_colors.empty())
+	{
 		_colors = generateColors(_vertices);
+	}
 	if (_texCoords.empty())
+	{
 		_texCoords = generateTexCoords(_vertices);
+	}
 
 	glGenBuffers(1, &_pointsVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, _pointsVBO);

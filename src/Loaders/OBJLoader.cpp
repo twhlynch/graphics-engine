@@ -1,7 +1,6 @@
 #include "OBJLoader.hpp"
 #include "../Logging.hpp"
 
-#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -48,7 +47,9 @@ Mesh *OBJLoader::load(const std::string &path)
 void OBJLoader::parseLine(const std::string &line, std::vector<float> &vertices, std::vector<size_t> &indices)
 {
 	if (line.empty() || line[0] == '#')
+	{
 		return;
+	}
 
 	std::stringstream ss(line);
 	std::string type;
@@ -74,7 +75,9 @@ void OBJLoader::parseLine(const std::string &line, std::vector<float> &vertices,
 			std::getline(vertStream, indexStr, '/');
 
 			if (!indexStr.empty())
+			{
 				faceIndices.push_back(std::stoi(indexStr) - 1);
+			}
 		}
 
 		for (size_t i = 1; i + 1 < faceIndices.size(); i++)

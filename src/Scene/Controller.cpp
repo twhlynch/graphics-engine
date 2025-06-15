@@ -5,7 +5,6 @@
 #include <glm/glm.hpp>
 
 #include <cmath>
-#include <iostream>
 
 Controller::Controller(Camera *camera, Window *window, float speed, float sprintMultiplier, float sensitivity) :
 	_camera(camera), _window(window), _speed(speed), _sprintMultiplier(sprintMultiplier), _sensitivity(sensitivity), _firstMouse(true), _lastX(0), _lastY(0), _yaw(-90.0f), _pitch(0.0f)
@@ -21,7 +20,9 @@ Controller::Controller(Camera *camera, Window *window, float speed, float sprint
 void Controller::update(float delta)
 {
 	if (!_camera || !_window)
+	{
 		return;
+	}
 
 	processKeyboard(delta);
 	processMouse();
@@ -33,22 +34,36 @@ void Controller::processKeyboard(float delta)
 
 	float currentSpeed = _speed;
 	if (glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+	{
 		currentSpeed *= _sprintMultiplier;
+	}
 
 	Vector3 direction(0.0f, 0.0f, 0.0f);
 
 	if (glfwGetKey(win, GLFW_KEY_W) == GLFW_PRESS)
+	{
 		direction.z -= 1.0f;
+	}
 	if (glfwGetKey(win, GLFW_KEY_S) == GLFW_PRESS)
+	{
 		direction.z += 1.0f;
+	}
 	if (glfwGetKey(win, GLFW_KEY_A) == GLFW_PRESS)
+	{
 		direction.x -= 1.0f;
+	}
 	if (glfwGetKey(win, GLFW_KEY_D) == GLFW_PRESS)
+	{
 		direction.x += 1.0f;
+	}
 	if (glfwGetKey(win, GLFW_KEY_Q) == GLFW_PRESS)
+	{
 		direction.y -= 1.0f;
+	}
 	if (glfwGetKey(win, GLFW_KEY_E) == GLFW_PRESS)
+	{
 		direction.y += 1.0f;
+	}
 
 	if (direction.x != 0.0f || direction.y != 0.0f || direction.z != 0.0f)
 	{
@@ -100,9 +115,13 @@ void Controller::processMouse()
 	_pitch += yoffset;
 
 	if (_pitch > 89.0f)
+	{
 		_pitch = 89.0f;
+	}
 	if (_pitch < -89.0f)
+	{
 		_pitch = -89.0f;
+	}
 
 	Vector3 front;
 	front.x = cos(glm::radians(_yaw)) * cos(glm::radians(_pitch));

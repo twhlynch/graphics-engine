@@ -4,7 +4,6 @@
 
 #include <GLFW/glfw3.h>
 
-#include <iostream>
 
 Window::Window(int width, int height, const std::string &title) :
 	_window(nullptr), _windowActive(true)

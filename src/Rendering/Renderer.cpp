@@ -70,14 +70,22 @@ void Renderer::draw()
 		GLint projLoc = glGetUniformLocation(shader->getProgramID(), "projection");
 
 		if (viewLoc != -1)
+		{
 			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+		}
 		else
+		{
 			WARN("'view' uniform not found in shader!");
+		}
 
 		if (projLoc != -1)
+		{
 			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+		}
 		else
+		{
 			WARN("'projection' uniform not found in shader!");
+		}
 
 		entity->draw();
 	}
@@ -107,14 +115,22 @@ void Renderer::draw()
 		GLint projLoc = glGetUniformLocation(shader->getProgramID(), "projection");
 
 		if (viewLoc != -1)
+		{
 			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+		}
 		else
+		{
 			WARN("'view' uniform not found in shader!");
+		}
 
 		if (projLoc != -1)
+		{
 			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+		}
 		else
+		{
 			WARN("'projection' uniform not found in shader!");
+		}
 
 		entity->draw();
 	}
