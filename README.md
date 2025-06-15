@@ -4,12 +4,32 @@
 
 Almost a simple graphics engine with OpenGL
 
-Messing with OpenGL w/ [GLAD](https://glad.dav1d.de/#profile=core&language=c&specification=gl&loader=on&api=gl%3D4.6) & GLFW3 graphics concepts
+- [GLAD](https://glad.dav1d.de/#profile=core&language=c&specification=gl&loader=on&api=gl%3D4.6)
+- glfw3
+- glm
+- [stb_image](https://github.com/nothings/stb)
 
-### MacOS Setup
+### Setup
 
-```bash
-brew install glfw
-./build.sh
-./build/Renderer
-```
+- Install `cmake`, `glfw3`, `glm`
+- Run `git lfs pull`
+- Run `./build.sh` to build
+- Run `./build/default/Renderer` (for Makefiles. Location differs by generator)
+
+#### build config
+`./build.sh` to build the debug version
+
+`./build.sh Release` to build the release version (does nothing for some generators)
+
+`./build.sh "CMake Generator"` to build to a specific generator
+
+`./build.sh "CMake Generator" Release` to build to a specific generator in release
+
+E.g.: `./build.sh "Xcode" Release`
+
+### Controls
+
+- `WASD`: move
+- `E & Q`: up & down
+- `Shift`: sprint
+- `ESC`: toggle mouse lock
