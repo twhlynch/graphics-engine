@@ -12,10 +12,11 @@ public:
 	~Renderer();
 
 	void setCamera(Camera *camera);
-	void addEntity(Entity *entity);
+	void addEntity(Entity *entity, bool alpha = false);
 	void draw();
 
 private:
 	std::vector<Entity *> _entities;
+	std::vector<Entity *> _transparentEntities;
 	Camera *_camera;
 };

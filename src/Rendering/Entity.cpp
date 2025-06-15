@@ -96,5 +96,5 @@ void Entity::draw()
 	else
 		WARN("'model' uniform not found in shader.");
 
-	_material->draw(_mesh);
+	_material->draw(_mesh, _shader);
 }

@@ -1,15 +1,15 @@
 #include "Mesh.hpp"
 
-#include "../Logging.hpp"
-
 #include <cmath>
 
-Mesh::Mesh(const std::vector<float> vertices, const std::vector<float> colors) :
-	_colorsVBO(0), _vertices(vertices), _colors(colors)
+Mesh::Mesh(const std::vector<float> vertices, const std::vector<float> colors, const std::vector<float> texCoords) :
+	_vertices(vertices), _colors(colors), _texCoords(texCoords)
 {
 	_vertexCount = _vertices.size() / 3;
 	if (_colors.empty())
 		_colors = generateColors(_vertices);
+	if (_texCoords.empty())
+		_texCoords = generateTexCoords(_vertices);
 
 	glGenBuffers(1, &_pointsVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, _pointsVBO);
@@ -18,6 +18,10 @@ Mesh::Mesh(const std::vector<float> vertices, const std::vector<float> colors) :
 	glGenBuffers(1, &_colorsVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, _colorsVBO);
 	glBufferData(GL_ARRAY_BUFFER, _colors.size() * sizeof(float), _colors.data(), GL_STATIC_DRAW);
+
+	glGenBuffers(1, &_UVVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, _UVVBO);
+	glBufferData(GL_ARRAY_BUFFER, _texCoords.size() * sizeof(float), _texCoords.data(), GL_STATIC_DRAW);
 
 	glGenVertexArrays(1, &_VAO);
 	glBindVertexArray(_VAO);
@@ -29,12 +33,56 @@ Mesh::Mesh(const std::vector<float> vertices, const std::vector<float> colors) :
 	glBindBuffer(GL_ARRAY_BUFFER, _colorsVBO);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
 	glEnableVertexAttribArray(1);
+
+	glBindBuffer(GL_ARRAY_BUFFER, _UVVBO);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void *)0);
+	glEnableVertexAttribArray(2);
 }
 
 Mesh::~Mesh()
 {
 	glDeleteVertexArrays(1, &_VAO);
 	glDeleteBuffers(1, &_pointsVBO);
+	glDeleteBuffers(1, &_UVVBO);
+	glDeleteBuffers(1, &_colorsVBO);
+}
+
+Mesh *Mesh::operator+(const Mesh &other) const
+{
+	std::vector<float> vertices;
+	std::vector<float> texCoords;
+	std::vector<float> colors;
+
+	vertices.insert(vertices.end(), _vertices.begin(), _vertices.end());
+	vertices.insert(vertices.end(), other._vertices.begin(), other._vertices.end());
+	colors.insert(colors.end(), _colors.begin(), _colors.end());
+	colors.insert(colors.end(), other._colors.begin(), other._colors.end());
+	texCoords.insert(texCoords.end(), _texCoords.begin(), _texCoords.end());
+	texCoords.insert(texCoords.end(), other._texCoords.begin(), other._texCoords.end());
+
+	return new Mesh(vertices, colors, texCoords);
+}
+
+std::vector<float> Mesh::generateTexCoords(const std::vector<float> &vertices)
+{
+	std::vector<float> texCoords;
+
+	size_t vertexCount = vertices.size() / 3;
+	for (size_t i = 0; i < vertexCount; i += 6)
+	{ // triangles only
+		std::vector<float> faceCoords = {
+			0.0f, 0.0f, // bottom left
+			1.0f, 1.0f, // top right
+			0.0f, 1.0f, // top left
+
+			0.0f, 0.0f, // bottom left
+			1.0f, 0.0f, // bottom right
+			1.0f, 1.0f, // top right
+		};
+		texCoords.insert(texCoords.end(), faceCoords.begin(), faceCoords.end());
+	}
+
+	return texCoords;
 }
 
 std::vector<float> Mesh::generateColors(const std::vector<float> &vertices)
@@ -67,21 +115,32 @@ Mesh *Mesh::WithQuad(float w, float h)
 	float hw = w * 0.5f;
 	float hh = h * 0.5f;
 
+	// clang-format off
 	return new Mesh({
-		hw, -hh, 0.0f,	// bottom right
 		-hw, -hh, 0.0f, // bottom left
-		-hw, hh, 0.0f,	// top left
+		hw, hh, 0.0f,   // top right
+		hw, -hh, 0.0f,  // bottom right
 
-		hw, hh, 0.0f,  // top right
-		hw, -hh, 0.0f, // bottom right
-		-hw, hh, 0.0f, // top left
+		-hw, -hh, 0.0f, // bottom left
+		-hw,hh, 0.0f,   // top left
+		hw,  hh, 0.0f,  // top right
+	}, {}, {
+		0.0f, 1.0f, // top left
+		1.0f, 0.0f, // bottom right
+		1.0f, 1.0f, // top right
+
+		0.0f, 1.0f, // top left
+		0.0f, 0.0f, // bottom left
+		1.0f, 0.0f, // top left
 	});
+	// clang-format on
 }
 
 Mesh *Mesh::WithCube(float scale)
 {
 	float hs = scale * 0.5f;
 
+	// clang-format off
 	return new Mesh({
 		-hs, -hs, hs, hs, hs, hs, hs, -hs, hs, // front bottom left
 		-hs, -hs, hs, -hs, hs, hs, hs, hs, hs, // front top right
@@ -100,7 +159,21 @@ Mesh *Mesh::WithCube(float scale)
 
 		-hs, -hs, -hs, hs, -hs, hs, hs, -hs, -hs, // bottom bottom left
 		-hs, -hs, -hs, -hs, -hs, hs, hs, -hs, hs, // bottom top right
+	}, {}, {
+		0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+		0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+		0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+		0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+		0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+		0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+		0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+		0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+		0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+		0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
+		0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+		0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f,
 	});
+	// clang-format on
 }
 
 Mesh *Mesh::WithPyramid(float width, float height)

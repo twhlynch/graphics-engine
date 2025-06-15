@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../Rendering/Mesh.hpp"
+#include "../Rendering/Shader.hpp"
+#include "../Rendering/Texture.hpp"
 
 #include <glad/glad.h>
 
@@ -16,17 +18,26 @@ public:
 		Triangles = GL_TRIANGLES,
 		TriangleStrip = GL_TRIANGLE_STRIP,
 		TriangleFan = GL_TRIANGLE_FAN,
+		Quads = GL_QUADS,
 	};
 
 	Material();
 	~Material();
 
-	void draw(Mesh *mesh);
+	void setTexture(Texture *texture)
+	{
+		_texture = texture;
+	}
+
+	void draw(Mesh *mesh, Shader *shader);
 
 	void setRenderType(RenderType type);
 	void setWireframe(bool value);
+	void setCullBackface(bool value);
 
 private:
+	Texture *_texture;
 	GLuint _renderType;
 	bool _wireframe;
+	bool _cullBackface;
 };

@@ -1,16 +1,25 @@
 #include "Material.hpp"
+#include "../Rendering/Texture.hpp"
 
 Material::Material() :
-	_renderType(Triangles), _wireframe(false)
+	_texture(nullptr), _renderType(Triangles), _wireframe(false), _cullBackface(true)
 {
 }
 Material::~Material()
 {
 }
 
-void Material::draw(Mesh *mesh)
+void Material::draw(Mesh *mesh, Shader *shader)
 {
-	glCullFace(GL_BACK);
+	if (_cullBackface)
+	{
+		glCullFace(GL_BACK);
+		glEnable(GL_CULL_FACE);
+	}
+	else
+	{
+		glDisable(GL_CULL_FACE);
+	}
 	glFrontFace(GL_CW);
 
 	if (_wireframe)
@@ -21,7 +30,19 @@ void Material::draw(Mesh *mesh)
 	else
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		glEnable(GL_CULL_FACE);
+		if (_cullBackface)
+		{
+			glEnable(GL_CULL_FACE);
+		}
+	}
+
+	if (_texture)
+	{
+		_texture->use();
+
+		GLint texLoc = glGetUniformLocation(shader->getProgramID(), "tex");
+		if (texLoc != -1)
+			glUniform1i(texLoc, 0);
 	}
 
 	glBindVertexArray(mesh->_VAO);
@@ -35,4 +56,8 @@ void Material::setRenderType(RenderType type)
 void Material::setWireframe(bool value)
 {
 	_wireframe = value;
+}
+void Material::setCullBackface(bool value)
+{
+	_cullBackface = value;
 }

@@ -10,10 +10,18 @@ class Mesh
 	friend class Material;
 
 public:
-	Mesh(const std::vector<float> vertices, const std::vector<float> colors = {});
+	Mesh(const std::vector<float> vertices, const std::vector<float> colors = {}, const std::vector<float> texCoords = {});
 	~Mesh();
 
+	std::vector<float> *GetVertices()
+	{
+		return &_vertices;
+	};
+
+	Mesh *operator+(const Mesh &other) const;
+
 	static std::vector<float> generateColors(const std::vector<float> &vertices);
+	static std::vector<float> generateTexCoords(const std::vector<float> &vertices);
 
 	static Mesh *WithTriangle(float w = 1.0f, float h = 1.0f);
 	static Mesh *WithQuad(float w = 1.0f, float h = 1.0f);
@@ -23,8 +31,9 @@ public:
 	static Mesh *WithCylinder(float radius = 0.5f, float height = 1.0f, size_t segments = 16);
 
 private:
-	GLuint _VAO, _pointsVBO, _colorsVBO;
+	GLuint _VAO, _pointsVBO, _colorsVBO, _UVVBO;
 	size_t _vertexCount;
 	std::vector<float> _vertices;
 	std::vector<float> _colors;
+	std::vector<float> _texCoords;
 };

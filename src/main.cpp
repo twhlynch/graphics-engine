@@ -1,6 +1,5 @@
 #include "Clock.hpp"
 #include "Loaders/OBJLoader.hpp"
-#include "Logging.hpp"
 #include "Math/Quaternion.hpp"
 #include "Math/Ray.hpp"
 #include "Math/Vector3.hpp"
@@ -13,9 +12,6 @@
 #include "Scene/Controller.hpp"
 
 #include <GLFW/glfw3.h>
-
-#include <cmath>
-#include <iostream>
 
 int main()
 {
@@ -30,8 +26,14 @@ int main()
 	Controller *controller = new Controller(camera, window);
 
 	Shader *shader = new Shader("assets/shaders/fog_vert.glsl", "assets/shaders/fog_frag.glsl");
+	Shader *texturedShader = new Shader("assets/shaders/texture_vert.glsl", "assets/shaders/texture_frag.glsl");
+
+	std::vector<Shader *> shaders({texturedShader, shader, shader});
 
 	std::vector<Entity *> entities;
+
+	std::string image("fallback.png");
+	Texture *texture = new Texture(image);
 
 	std::vector<Material *> materialList = {
 		(new Material()),
@@ -44,10 +46,11 @@ int main()
 	Mesh *dragon = OBJLoader::load("assets/models/dragon.obj");
 	for (size_t i = 0; i < materialList.size(); i++)
 	{
-		Entity *entity = new Entity(dragon, materialList[i], shader);
+		materialList[i]->setTexture(texture);
+		Entity *entity = new Entity(dragon, materialList[i], shaders[i]);
 		Vector3 vec(-4.0f + 4 * (float)i, 2.5f, 0.0f);
 		entity->setPosition(vec);
-		renderer->addEntity(entity);
+		renderer->addEntity(entity, (i == 0));
 		entities.push_back(entity);
 	}
 
@@ -63,7 +66,7 @@ int main()
 	{
 		for (size_t j = 0; j < materialList.size(); j++)
 		{
-			Entity *entity = new Entity(meshList[i], materialList[j], shader);
+			Entity *entity = new Entity(meshList[i], materialList[j], shaders[j]);
 			Vector3 vec(-5.0f + 2.0f * (float)i, -1.5f * (float)j, 0.0f);
 			entity->setPosition(vec);
 			renderer->addEntity(entity);

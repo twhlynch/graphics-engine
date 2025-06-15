@@ -17,6 +17,9 @@ include_directories(
 	${glfw3_INCLUDE_DIR}
 	${GLM_INCLUDE_DIRS}
 	vendor/glad/include
+	vendor/stb_image/include
+	/usr/local/include
+	/opt/homebrew/include
 )
 
 set_source_files_properties(vendor/glad/src/glad.c PROPERTIES LANGUAGE C)

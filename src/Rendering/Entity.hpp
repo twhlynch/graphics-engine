@@ -15,6 +15,19 @@ public:
 	void setRotation(const Quaternion &rotation);
 	void setScale(const Vector3 &scale);
 
+	Vector3 getPosition() const
+	{
+		return _position;
+	}
+	Quaternion getRotation() const
+	{
+		return _rotation;
+	}
+	Vector3 getScale() const
+	{
+		return _scale;
+	}
+
 	Shader *getShader() const;
 	void setShader(Shader *shader);
 	Material *getMaterial() const;
