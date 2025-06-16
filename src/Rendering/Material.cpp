@@ -47,6 +47,8 @@ void Material::draw(Mesh *mesh, Shader *shader)
 		}
 	}
 
+	mesh->refresh();
+
 	glBindVertexArray(mesh->_VAO);
 	glDrawArrays(_renderType, 0, static_cast<GLsizei>(mesh->_vertexCount));
 }

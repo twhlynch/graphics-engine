@@ -51,6 +51,23 @@ Mesh::~Mesh()
 	glDeleteBuffers(1, &_colorsVBO);
 }
 
+void Mesh::refresh()
+{
+	if (_changed)
+	{
+		_changed = false;
+
+		glBindBuffer(GL_ARRAY_BUFFER, _pointsVBO);
+		glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(float), _vertices.data(), GL_STATIC_DRAW);
+
+		glBindBuffer(GL_ARRAY_BUFFER, _colorsVBO);
+		glBufferData(GL_ARRAY_BUFFER, _colors.size() * sizeof(float), _colors.data(), GL_STATIC_DRAW);
+
+		glBindBuffer(GL_ARRAY_BUFFER, _UVVBO);
+		glBufferData(GL_ARRAY_BUFFER, _texCoords.size() * sizeof(float), _texCoords.data(), GL_STATIC_DRAW);
+	}
+}
+
 Mesh *Mesh::operator+(const Mesh &other) const
 {
 	std::vector<float> vertices;

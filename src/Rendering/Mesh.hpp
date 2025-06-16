@@ -23,6 +23,13 @@ public:
 	static std::vector<float> generateColors(const std::vector<float> &vertices);
 	static std::vector<float> generateTexCoords(const std::vector<float> &vertices);
 
+	void changed()
+	{
+		_changed = true;
+	}
+
+	void refresh();
+
 	static Mesh *WithTriangle(float w = 1.0f, float h = 1.0f);
 	static Mesh *WithQuad(float w = 1.0f, float h = 1.0f);
 	static Mesh *WithCube(float scale = 1.0f);
@@ -36,4 +43,5 @@ private:
 	std::vector<float> _vertices;
 	std::vector<float> _colors;
 	std::vector<float> _texCoords;
+	bool _changed;
 };
