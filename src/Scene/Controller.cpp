@@ -29,37 +29,35 @@ void Controller::update(float delta)
 
 void Controller::processKeyboard(float delta)
 {
-	GLFWwindow *win = _window->getGLFWwindow();
-
 	float currentSpeed = _speed;
-	if (glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+	if (_window->isHolding(GLFW_KEY_LEFT_SHIFT))
 	{
 		currentSpeed *= _sprintMultiplier;
 	}
 
 	Vector3 direction(0.0f, 0.0f, 0.0f);
 
-	if (glfwGetKey(win, GLFW_KEY_W) == GLFW_PRESS)
+	if (_window->isHolding(GLFW_KEY_W))
 	{
 		direction.z -= 1.0f;
 	}
-	if (glfwGetKey(win, GLFW_KEY_S) == GLFW_PRESS)
+	if (_window->isHolding(GLFW_KEY_S))
 	{
 		direction.z += 1.0f;
 	}
-	if (glfwGetKey(win, GLFW_KEY_A) == GLFW_PRESS)
+	if (_window->isHolding(GLFW_KEY_A))
 	{
 		direction.x -= 1.0f;
 	}
-	if (glfwGetKey(win, GLFW_KEY_D) == GLFW_PRESS)
+	if (_window->isHolding(GLFW_KEY_D))
 	{
 		direction.x += 1.0f;
 	}
-	if (glfwGetKey(win, GLFW_KEY_Q) == GLFW_PRESS)
+	if (_window->isHolding(GLFW_KEY_Q))
 	{
 		direction.y -= 1.0f;
 	}
-	if (glfwGetKey(win, GLFW_KEY_E) == GLFW_PRESS)
+	if (_window->isHolding(GLFW_KEY_E))
 	{
 		direction.y += 1.0f;
 	}

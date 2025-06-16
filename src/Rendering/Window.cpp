@@ -4,6 +4,7 @@
 
 #include <GLFW/glfw3.h>
 
+std::map<int, Window::KeyState> Window::_keys;
 
 Window::Window(int width, int height, const std::string &title) :
 	_window(nullptr), _windowActive(true)
@@ -31,6 +32,7 @@ Window::Window(int width, int height, const std::string &title) :
 
 	glfwMakeContextCurrent(_window);
 	glfwSetFramebufferSizeCallback(_window, framebuffer_size_callback);
+	glfwSetKeyCallback(_window, key_callback);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
@@ -67,29 +69,55 @@ void Window::framebuffer_size_callback(GLFWwindow * /*window*/, int width, int h
 	glViewport(0, 0, width, height);
 }
 
+
+void Window::key_callback(GLFWwindow * /*window*/, int key, int /*scancode*/, int action, int /*mods*/)
+{
+	if (action == GLFW_PRESS)
+	{
+		KeyState &state = _keys[key];
+		if (state == RELEASED)
+		{
+			state = PRESSED;
+		}
+	}
+	else if (action == GLFW_RELEASE)
+	{
+		_keys[key] = RELEASED;
+	}
+}
+
+bool Window::isPressing(int key)
+{
+	return Window::_keys[key] == PRESSED;
+}
+bool Window::isHolding(int key)
+{
+	return Window::_keys[key] == HELD;
+}
+
 void Window::update()
 {
 	glfwSwapBuffers(_window);
+
+	for (auto pair : Window::_keys)
+	{
+		if (pair.second == PRESSED && glfwGetKey(_window, pair.first) == GLFW_PRESS)
+		{
+			Window::_keys[pair.first] = HELD;
+		}
+	}
 	glfwPollEvents();
 
-	if (glfwGetKey(_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	if (isPressing(GLFW_KEY_ESCAPE))
 	{
-		_pressingEscape = true;
-	}
-	else
-	{
-		if (_pressingEscape)
+		_windowActive = !_windowActive;
+		if (_windowActive)
 		{
-			_windowActive = !_windowActive;
-			if (_windowActive)
-			{
-				glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-			}
-			else
-			{
-				glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-			}
+			glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 		}
-		_pressingEscape = false;
+		else
+		{
+			glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		}
 	}
 }
