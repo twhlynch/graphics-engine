@@ -13,4 +13,5 @@ void main()
 {
 	color = vertex_color;
 	gl_Position = projection * view * model * vec4(vertex_position, 1.0);
+	gl_PointSize = 10.0;
 }

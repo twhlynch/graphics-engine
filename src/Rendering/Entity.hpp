@@ -38,9 +38,9 @@ public:
 
 	void draw();
 
-private:
 	Matrix4 computeModelMatrix() const;
 
+private:
 	Mesh *_mesh;
 	Material *_material;
 	Shader *_shader;

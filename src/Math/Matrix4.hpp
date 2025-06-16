@@ -3,8 +3,6 @@
 #include "Quaternion.hpp"
 #include "Vector3.hpp"
 
-#include <iostream>
-
 class Matrix4
 {
 public:
@@ -42,6 +40,18 @@ public:
 			}
 		}
 		return result;
+	}
+
+	inline Vector3 apply(Vector3 &v) const
+	{
+		float x = v.x, y = v.y, z = v.z;
+		const float w = 1 / (_m[3] * x + _m[7] * y + _m[11] * z + _m[15]);
+
+		v.x = (_m[0] * x + _m[4] * y + _m[8] * z + _m[12]) * w;
+		v.y = (_m[1] * x + _m[5] * y + _m[9] * z + _m[13]) * w;
+		v.z = (_m[2] * x + _m[6] * y + _m[10] * z + _m[14]) * w;
+
+		return v;
 	}
 
 	static Matrix4 WithLookAt(const Vector3 &position, const Vector3 &target, const Vector3 &up)

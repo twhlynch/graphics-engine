@@ -5,7 +5,7 @@
 
 #include <vector>
 
-class Intersection
+struct Intersection
 {
 public:
 	Vector3 point;
@@ -26,6 +26,9 @@ public:
 	Entity *getEntityToVisualize(const float length = 100.0f) const;
 
 private:
+	void intersect(Entity *entity, std::vector<Intersection> &intersections) const;
+	Vector3 *intersectTriangle(const Vector3 &a, const Vector3 &b, const Vector3 &c) const;
+
 	Vector3 _position;
 	Vector3 _direction;
 	std::vector<Entity *> _objects;

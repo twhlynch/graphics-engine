@@ -88,9 +88,11 @@ int main()
 		entities.push_back(entity);
 	}
 
-	Ray *ray = new Ray(Vector3(0.0f), Vector3(45.0f, 45.0f, 45.0f));
+	Ray *ray = new Ray(camera->getPosition(), camera->getForward());
 	Entity *rayVis = ray->getEntityToVisualize();
+	ray->setObjects(entities);
 	renderer->addEntity(rayVis);
+	Mesh *pointMesh = new Mesh({0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f});
 
 	Clock *clock = new Clock();
 	while (!window->shouldClose())
@@ -105,6 +107,21 @@ int main()
 		for (Entity *entity : entities)
 		{
 			entity->setRotation((entity->getRotation() * Quaternion::WithAxisAngle(Vector3(0, 1, 0), delta)).normalized());
+		}
+
+		if (window->isPressing(GLFW_KEY_SPACE))
+		{
+			ray->set(camera->getPosition(), camera->getForward());
+			*rayVis = *ray->getEntityToVisualize();
+
+			std::vector<Intersection> intersections = ray->cast();
+			for (Intersection intersection : intersections)
+			{
+				Entity *entity = new Entity(pointMesh, materialList[2], rayVis->getShader());
+				entity->setScale(0.1f);
+				entity->setPosition(intersection.point);
+				renderer->addEntity(entity, true);
+			}
 		}
 
 		renderer->draw();
