@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Math/Matrix4.hpp"
 #include "../Math/Quaternion.hpp"
 #include "../Math/Vector3.hpp"
 #include "../Rendering/Material.hpp"
@@ -38,7 +39,7 @@ public:
 	void draw();
 
 private:
-	glm::mat4 computeModelMatrix() const;
+	Matrix4 computeModelMatrix() const;
 
 	Mesh *_mesh;
 	Material *_material;

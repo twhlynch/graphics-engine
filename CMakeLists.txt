@@ -10,12 +10,10 @@ add_compile_options(-Wall -Wextra -Wpedantic -Werror)
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
-find_package(glm REQUIRED)
 
 include_directories(
 	${OPENGL_INCLUDE_DIR}
 	${glfw3_INCLUDE_DIR}
-	${GLM_INCLUDE_DIRS}
 	vendor/glad/include
 	vendor/stb_image/include
 	/usr/local/include
@@ -37,7 +35,6 @@ add_executable(Renderer
 target_link_libraries(Renderer
 	${OPENGL_LIBRARIES}
 	glfw
-	glm::glm
 	glad_c
 )
 

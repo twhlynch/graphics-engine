@@ -1,9 +1,9 @@
 #pragma once
 
-#include <glm/glm.hpp>
 
 #include <algorithm>
 #include <cmath>
+#include <float.h>
 #include <ostream>
 
 class Vector3
@@ -122,11 +122,6 @@ public:
 		return out;
 	}
 
-	inline glm::vec3 asGLM() const
-	{
-		return glm::vec3(x, y, z);
-	}
-
 	inline float max() const
 	{
 		return std::max(std::max(x, y), z);
@@ -136,7 +131,7 @@ public:
 		return std::min(std::min(x, y), z);
 	}
 
-	inline Vector3 normalize(const float l = 1.0f)
+	inline void normalize(const float l = 1.0f)
 	{
 		float len = length();
 
@@ -152,12 +147,12 @@ public:
 			y *= factor;
 			z *= factor;
 		}
-
-		return *this;
 	}
 	inline Vector3 normalized(const float l = 1.0f) const
 	{
-		return Vector3(*this).normalize(l);
+		Vector3 vec = Vector3(*this);
+		vec.normalize(l);
+		return vec;
 	}
 	inline Vector3 cross(const Vector3 &other) const
 	{

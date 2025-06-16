@@ -6,12 +6,11 @@ Almost a simple graphics engine with OpenGL
 
 - [GLAD](https://glad.dav1d.de/#profile=core&language=c&specification=gl&loader=on&api=gl%3D4.6)
 - glfw3
-- glm
 - [stb_image](https://github.com/nothings/stb)
 
 ### Setup
 
-- Install `cmake`, `glfw3`, `glm`
+- Install `cmake`, `glfw3`
 - Run `git lfs pull`
 - Run `./build.sh` to build
 - Run `./build/default/Renderer` (for Makefiles. Location differs by generator)

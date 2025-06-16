@@ -74,6 +74,20 @@ int main()
 		}
 	}
 
+	for (int i = 0; i < 100; i++)
+	{
+		Entity *entity = new Entity(meshList[4], materialList[0], shaders[0]);
+		Vector3 position((static_cast<float>(rand() % 200) / 100.0f) - 1, (static_cast<float>(rand() % 200) / 100.0f) - 1 + 6, (static_cast<float>(rand() % 200) / 100.0f) - 1);
+		Vector3 scale(static_cast<float>(rand() % 5) / 10, static_cast<float>(rand() % 5) / 10, static_cast<float>(rand() % 5) / 10);
+		Quaternion rotation(static_cast<float>(rand() % 200 - 100) / 100.0f, static_cast<float>(rand() % 200 - 100) / 100.0f, static_cast<float>(rand() % 200 - 100) / 100.0f, static_cast<float>(rand() % 200 - 100) / 100.0f);
+		rotation.normalize();
+		entity->setPosition(position);
+		entity->setScale(scale);
+		entity->setRotation(rotation);
+		renderer->addEntity(entity, true);
+		entities.push_back(entity);
+	}
+
 	Ray *ray = new Ray(Vector3(0.0f), Vector3(45.0f, 45.0f, 45.0f));
 	Entity *rayVis = ray->getEntityToVisualize();
 	renderer->addEntity(rayVis);
@@ -82,7 +96,7 @@ int main()
 	while (!window->shouldClose())
 	{
 		float delta = clock->getDelta();
-		float currentTime = clock->getTime();
+		// float currentTime = clock->getTime();
 
 		shader->refresh();
 
@@ -90,7 +104,7 @@ int main()
 
 		for (Entity *entity : entities)
 		{
-			entity->setRotation(Quaternion::WithAxisAngle(Vector3(0, 1, 0), currentTime));
+			entity->setRotation((entity->getRotation() * Quaternion::WithAxisAngle(Vector3(0, 1, 0), delta)).normalized());
 		}
 
 		renderer->draw();

@@ -1,12 +1,9 @@
 #include "Entity.hpp"
+#include "../Math/Matrix4.hpp"
 
 #include "../Logging.hpp"
 
 #include <glad/glad.h>
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 Entity::Entity(Mesh *mesh, Material *material, Shader *shader) :
 	_mesh(nullptr), _material(nullptr), _shader(nullptr), _scale(1.0f)
@@ -54,11 +51,11 @@ void Entity::setScale(const Vector3 &scale)
 	_scale = scale;
 }
 
-glm::mat4 Entity::computeModelMatrix() const
+Matrix4 Entity::computeModelMatrix() const
 {
-	glm::mat4 translationMatrix = glm::translate(glm::mat4(1.0f), _position.asGLM());
-	glm::mat4 rotationMatrix = glm::mat4_cast(_rotation.asGLM());
-	glm::mat4 scaleMatrix = glm::scale(glm::mat4(1.0f), _scale.asGLM());
+	Matrix4 translationMatrix = Matrix4::WithTranslation(_position);
+	Matrix4 rotationMatrix = Matrix4::WithRotation(_rotation);
+	Matrix4 scaleMatrix = Matrix4::WithScale(_scale);
 
 	return translationMatrix * rotationMatrix * scaleMatrix;
 }
@@ -102,8 +99,8 @@ void Entity::draw()
 
 	if (modelLoc != -1)
 	{
-		glm::mat4 model = computeModelMatrix();
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+		Matrix4 model = computeModelMatrix();
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, model.data());
 	}
 	else
 	{

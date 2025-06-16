@@ -1,8 +1,11 @@
 #include "Camera.hpp"
 
+#include "../Logging.hpp"
+#include "../Math/Angles.hpp"
+#include "../Math/Matrix4.hpp"
+
 #include <cmath>
 
-#include <glm/glm.hpp>
 
 Camera::Camera(float fov, float aspect, float nearPlane, float farPlane) :
 	_position(Vector3()), _fov(fov), _aspectRatio(aspect), _nearClip(nearPlane), _farClip(farPlane)
@@ -53,14 +56,14 @@ Vector3 &Camera::getTarget()
 	return _target;
 }
 
-glm::mat4 Camera::getViewMatrix() const
+Matrix4 Camera::getViewMatrix() const
 {
-	return glm::lookAt(_position.asGLM(), _target.asGLM(), _upDirection.asGLM());
+	return Matrix4::WithLookAt(_position, _target, _upDirection);
 }
 
-glm::mat4 Camera::getProjectionMatrix() const
+Matrix4 Camera::getProjectionMatrix() const
 {
-	return glm::perspective(glm::radians(_fov), _aspectRatio, _nearClip, _farClip);
+	return Matrix4::WithPerspective(radians(_fov), _aspectRatio, _nearClip, _farClip);
 }
 
 Vector3 Camera::getForward() const

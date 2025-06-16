@@ -1,8 +1,7 @@
 #pragma once
 
+#include "../Math/Matrix4.hpp"
 #include "../Math/Vector3.hpp"
-
-#include <glm/glm.hpp>
 
 class Camera
 {
@@ -13,8 +12,8 @@ public:
 	void setTarget(const Vector3 &target);
 	void setAspectRatio(float aspect);
 
-	glm::mat4 getViewMatrix() const;
-	glm::mat4 getProjectionMatrix() const;
+	Matrix4 getViewMatrix() const;
+	Matrix4 getProjectionMatrix() const;
 
 	Vector3 getForward() const;
 	Vector3 getRight() const;

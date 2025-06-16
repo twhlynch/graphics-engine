@@ -1,8 +1,7 @@
 #include "Controller.hpp"
+#include "../Math/Angles.hpp"
 
 #include <GLFW/glfw3.h>
-
-#include <glm/glm.hpp>
 
 #include <cmath>
 
@@ -12,8 +11,8 @@ Controller::Controller(Camera *camera, Window *window, float speed, float sprint
 	if (camera)
 	{
 		Vector3 forward = camera->getForward();
-		_pitch = glm::degrees(asin(forward.y));
-		_yaw = glm::degrees(atan2(forward.z, forward.x));
+		_pitch = degrees(asin(forward.y));
+		_yaw = degrees(atan2(forward.z, forward.x));
 	}
 }
 
@@ -124,9 +123,9 @@ void Controller::processMouse()
 	}
 
 	Vector3 front;
-	front.x = cos(glm::radians(_yaw)) * cos(glm::radians(_pitch));
-	front.y = sin(glm::radians(_pitch));
-	front.z = sin(glm::radians(_yaw)) * cos(glm::radians(_pitch));
+	front.x = cos(radians(_yaw)) * cos(radians(_pitch));
+	front.y = sin(radians(_pitch));
+	front.z = sin(radians(_yaw)) * cos(radians(_pitch));
 	front = front.normalized();
 
 	_camera->getTarget() = _camera->getPosition() + front;

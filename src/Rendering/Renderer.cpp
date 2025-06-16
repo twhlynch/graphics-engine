@@ -4,9 +4,6 @@
 
 #include <glad/glad.h>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 Renderer::Renderer() :
 	_camera(nullptr)
@@ -52,8 +49,8 @@ void Renderer::draw()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glm::mat4 view = _camera->getViewMatrix();
-	glm::mat4 projection = _camera->getProjectionMatrix();
+	Matrix4 view = _camera->getViewMatrix();
+	Matrix4 projection = _camera->getProjectionMatrix();
 
 	for (Entity *entity : _entities)
 	{
@@ -71,7 +68,7 @@ void Renderer::draw()
 
 		if (viewLoc != -1)
 		{
-			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, view.data());
 		}
 		else
 		{
@@ -80,7 +77,7 @@ void Renderer::draw()
 
 		if (projLoc != -1)
 		{
-			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+			glUniformMatrix4fv(projLoc, 1, GL_FALSE, projection.data());
 		}
 		else
 		{
@@ -116,7 +113,7 @@ void Renderer::draw()
 
 		if (viewLoc != -1)
 		{
-			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, view.data());
 		}
 		else
 		{
@@ -125,7 +122,7 @@ void Renderer::draw()
 
 		if (projLoc != -1)
 		{
-			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+			glUniformMatrix4fv(projLoc, 1, GL_FALSE, projection.data());
 		}
 		else
 		{

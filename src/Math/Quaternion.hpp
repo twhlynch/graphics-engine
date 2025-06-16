@@ -2,12 +2,9 @@
 
 #include "../Math/Vector3.hpp"
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
 #include <algorithm>
 #include <cmath>
+#include <float.h>
 #include <ostream>
 
 class Quaternion
@@ -112,11 +109,6 @@ public:
 		return out;
 	}
 
-	inline glm::qua<float> asGLM() const
-	{
-		return glm::qua<float>(w, x, y, z);
-	}
-
 	inline float max() const
 	{
 		return std::max(std::max(std::max(x, y), z), w);
@@ -126,7 +118,7 @@ public:
 		return std::min(std::min(std::min(x, y), z), w);
 	}
 
-	inline Quaternion normalize()
+	inline void normalize()
 	{
 		float len = length();
 
@@ -144,12 +136,12 @@ public:
 			z *= factor;
 			w *= factor;
 		}
-
-		return *this;
 	}
 	inline Quaternion normalized() const
 	{
-		return Quaternion(*this).normalize();
+		Quaternion quat(*this);
+		quat.normalize();
+		return quat;
 	}
 	inline float length() const
 	{
@@ -159,7 +151,7 @@ public:
 	{
 		return x * other.x + y * other.y + z * other.z + w * other.w;
 	}
-	inline Quaternion inverse()
+	inline void inverse()
 	{
 		float d = dot(*this);
 
@@ -167,24 +159,24 @@ public:
 		y = -y / d;
 		z = -z / d;
 		w /= d;
-
-		return *this;
 	}
 	inline Quaternion inversed()
 	{
-		return Quaternion(*this).inverse();
+		Quaternion quat(*this);
+		quat.inverse();
+		return quat;
 	}
-	inline Quaternion conjugate()
+	inline void conjugate()
 	{
 		x = -x;
 		y = -y;
 		z = -z;
-
-		return *this;
 	}
 	inline Quaternion conjugated()
 	{
-		return Quaternion(*this).conjugate();
+		Quaternion quat(*this);
+		quat.conjugate();
+		return quat;
 	}
 
 	inline float distance(const Quaternion &other) const
