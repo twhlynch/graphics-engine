@@ -6,14 +6,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_compile_options(-Wall -Wextra -Wpedantic -Werror)
-
 find_package(OpenGL REQUIRED)
-find_package(glfw3 REQUIRED)
+
+add_subdirectory(vendor/glfw)
+target_compile_options(glfw PRIVATE -w)
 
 include_directories(
 	${OPENGL_INCLUDE_DIR}
-	${glfw3_INCLUDE_DIR}
 	vendor/glad/include
 	vendor/stb_image/include
 	/usr/local/include
@@ -31,6 +30,8 @@ file(GLOB_RECURSE SOURCES
 add_executable(Renderer
 	${SOURCES}
 )
+
+target_compile_options(Renderer PRIVATE -Wall -Wextra -Wpedantic -Werror)
 
 target_link_libraries(Renderer
 	${OPENGL_LIBRARIES}

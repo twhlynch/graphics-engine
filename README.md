@@ -5,12 +5,13 @@
 Almost a simple graphics engine with OpenGL
 
 - [GLAD](https://glad.dav1d.de/#profile=core&language=c&specification=gl&loader=on&api=gl%3D4.6)
-- glfw3
+- [GLFW 3](https://github.com/glfw/glfw)
 - [stb_image](https://github.com/nothings/stb)
 
 ### Setup
 
-- Install `cmake`, `glfw3`
+- Ensure you have installed `cmake`, `opengl`, a generator such as `make`, or `ninja`, and ran `git lfs install`
+- Run `git submodule update --init --recursive`
 - Run `git lfs pull`
 - Run `./build.sh` to build
 - Run `./build/default/Renderer` (for Makefiles. Location differs by generator)
