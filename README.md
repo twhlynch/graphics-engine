@@ -16,16 +16,20 @@ Almost a simple graphics engine with OpenGL
 - Run `./build.sh` to build
 - Run `./build/default/Renderer` (for Makefiles. Location differs by generator)
 
-#### build config
-`./build.sh` to build the debug version
+#### build script
+`chmod +x build.sh` if needed.
 
-`./build.sh Release` to build the release version (does nothing for some generators)
+By default `./build.sh` will build the Debug version with your default CMake Generator (usually Unix Makefiles).
 
-`./build.sh "CMake Generator"` to build to a specific generator
+You can optionally add `Release` to build for release, `Docs` to also generate documentation with Doxygen (must be installed), or specify a different CMake Generator such as `Xcode`.
 
-`./build.sh "CMake Generator" Release` to build to a specific generator in release
+The build output will be in `build/default`, replacing default with a generator if specified, and within `Debug` or `Release` if supported by the generator you use.
 
-E.g.: `./build.sh "Xcode" Release`
+E.g.: `./build.sh "Xcode" Release` will build with `Xcode` to `build/Xcode/Release`.
+
+E.g.: `./build.sh Release Docs` will build with the default generator (usually Makefiles) to `build/default` and generate documentation to `build/default/html`.
+
+> Note: Sometimes generating docs will require `sudo`
 
 ### Controls
 

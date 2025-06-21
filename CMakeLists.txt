@@ -47,3 +47,18 @@ add_custom_target(assets
 )
 
 add_dependencies(Renderer assets)
+
+# MARK: Docs
+if(GENERATE_DOCUMENTATION)
+	find_package(Doxygen QUIET)
+	# set(DOXYGEN_QUIET YES)
+	# set(DOXYGEN_WARN_IF_UNDOCUMENTED "NO")
+	if(DOXYGEN_FOUND)
+		doxygen_add_docs(doc "src/" ALL
+			WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+			COMMENT "Generating documentation with Doxygen"
+		)
+	else()
+		message("Doxygen not found, skipping documentation generation")
+	endif()
+endif()
