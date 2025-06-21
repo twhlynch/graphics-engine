@@ -1,23 +1,26 @@
 #!/bin/bash
 
-# ./build.sh [args...] (Release, Docs, <CMake Generator>)
+# ./build.sh [args...] (Release, Docs, Run, <CMake Generator>)
 
 args=("$@")
 config="Debug"
 generate_docs="OFF"
 generator=""
+run=false
 
 for arg in "${args[@]}"; do
 	if [[ "$arg" == "Release" ]]; then
 		config="Release"
 	elif [[ "$arg" == "Docs" ]]; then
 		generate_docs="ON"
+	elif [[ "$arg" == "Run" ]]; then
+		run=true
 	fi
 done
 
 filtered_args=()
 for arg in "${args[@]}"; do
-	if [[ "$arg" != "Release" && "$arg" != "Docs" ]]; then
+	if [[ "$arg" != "Release" && "$arg" != "Docs" && "$arg" != "Run" ]]; then
 		filtered_args+=("$arg")
 	fi
 done
@@ -39,3 +42,12 @@ else
 fi
 
 cmake --build . --config "$config"
+
+if [[ $run == true ]]; then
+	executable="Renderer"
+	if [[ -d "$config" ]]; then
+		executable="$config/Renderer"
+	fi
+
+	./$executable
+fi

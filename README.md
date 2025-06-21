@@ -21,7 +21,7 @@ Almost a simple graphics engine with OpenGL
 
 By default `./build.sh` will build the Debug version with your default CMake Generator (usually Unix Makefiles).
 
-You can optionally add `Release` to build for release, `Docs` to also generate documentation with Doxygen (must be installed), or specify a different CMake Generator such as `Xcode`.
+You can optionally add `Release` to build for release, `Docs` to also generate documentation with Doxygen (must be installed), `Run` to automatically run, or specify a different CMake Generator such as `Xcode`.
 
 The build output will be in `build/default`, replacing default with a generator if specified, and within `Debug` or `Release` if supported by the generator you use.
 
