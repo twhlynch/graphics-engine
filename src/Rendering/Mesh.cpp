@@ -15,40 +15,21 @@ Mesh::Mesh(const std::vector<float> vertices, const std::vector<float> colors, c
 		_texCoords = generateTexCoords(_vertices);
 	}
 
-	glGenBuffers(1, &_pointsVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, _pointsVBO);
-	glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(float), _vertices.data(), GL_STATIC_DRAW);
-
-	glGenBuffers(1, &_colorsVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, _colorsVBO);
-	glBufferData(GL_ARRAY_BUFFER, _colors.size() * sizeof(float), _colors.data(), GL_STATIC_DRAW);
-
-	glGenBuffers(1, &_UVVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, _UVVBO);
-	glBufferData(GL_ARRAY_BUFFER, _texCoords.size() * sizeof(float), _texCoords.data(), GL_STATIC_DRAW);
+	_pointsVBO.setData(&_vertices);
+	_colorsVBO.setData(&_colors);
+	_UVVBO.setData(&_texCoords);
 
 	glGenVertexArrays(1, &_VAO);
 	glBindVertexArray(_VAO);
 
-	glBindBuffer(GL_ARRAY_BUFFER, _pointsVBO);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
-	glEnableVertexAttribArray(0);
-
-	glBindBuffer(GL_ARRAY_BUFFER, _colorsVBO);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
-	glEnableVertexAttribArray(1);
-
-	glBindBuffer(GL_ARRAY_BUFFER, _UVVBO);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void *)0);
-	glEnableVertexAttribArray(2);
+	_pointsVBO.bind(0, 3);
+	_colorsVBO.bind(1, 3);
+	_UVVBO.bind(2, 2);
 }
 
 Mesh::~Mesh()
 {
 	glDeleteVertexArrays(1, &_VAO);
-	glDeleteBuffers(1, &_pointsVBO);
-	glDeleteBuffers(1, &_UVVBO);
-	glDeleteBuffers(1, &_colorsVBO);
 }
 
 void Mesh::refresh()
@@ -57,14 +38,10 @@ void Mesh::refresh()
 	{
 		_changed = false;
 
-		glBindBuffer(GL_ARRAY_BUFFER, _pointsVBO);
-		glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(float), _vertices.data(), GL_STATIC_DRAW);
+		_pointsVBO.refresh();
+		_colorsVBO.refresh();
+		_UVVBO.refresh();
 
-		glBindBuffer(GL_ARRAY_BUFFER, _colorsVBO);
-		glBufferData(GL_ARRAY_BUFFER, _colors.size() * sizeof(float), _colors.data(), GL_STATIC_DRAW);
-
-		glBindBuffer(GL_ARRAY_BUFFER, _UVVBO);
-		glBufferData(GL_ARRAY_BUFFER, _texCoords.size() * sizeof(float), _texCoords.data(), GL_STATIC_DRAW);
 		_vertexCount = _vertices.size() / 3;
 	}
 }

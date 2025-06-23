@@ -4,6 +4,8 @@
 
 #include <vector>
 
+#include "../Rendering/BufferObject.hpp"
+
 class Material;
 class Mesh
 {
@@ -37,11 +39,14 @@ public:
 	static Mesh *WithCircle(float radius = 0.5f, size_t segments = 16);
 	static Mesh *WithCylinder(float radius = 0.5f, float height = 1.0f, size_t segments = 16);
 
-private:
-	GLuint _VAO, _pointsVBO, _colorsVBO, _UVVBO;
-	size_t _vertexCount;
+protected:
 	std::vector<float> _vertices;
 	std::vector<float> _colors;
 	std::vector<float> _texCoords;
+
+private:
+	GLuint _VAO;
+	BufferObject _pointsVBO, _colorsVBO, _UVVBO;
+	size_t _vertexCount;
 	bool _changed;
 };
