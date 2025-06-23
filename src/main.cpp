@@ -2,6 +2,7 @@
 #include "Loaders/OBJLoader.hpp"
 #include "Math/Angles.hpp"
 #include "Math/Quaternion.hpp"
+#include "Math/Random.hpp"
 #include "Math/Ray.hpp"
 #include "Math/Vector3.hpp"
 #include "Particles/ParticleEmitter.hpp"
@@ -81,9 +82,9 @@ int main()
 	for (int i = 0; i < 100; i++)
 	{
 		Entity *entity = new Entity(meshList[4], materialList[0], shaders[0]);
-		Vector3 position((static_cast<float>(rand() % 200) / 100.0f) - 1, (static_cast<float>(rand() % 200) / 100.0f) - 1 + 6, (static_cast<float>(rand() % 200) / 100.0f) - 1);
-		Vector3 scale(static_cast<float>(rand() % 5) / 10, static_cast<float>(rand() % 5) / 10, static_cast<float>(rand() % 5) / 10);
-		Quaternion rotation(static_cast<float>(rand() % 200 - 100) / 100.0f, static_cast<float>(rand() % 200 - 100) / 100.0f, static_cast<float>(rand() % 200 - 100) / 100.0f, static_cast<float>(rand() % 200 - 100) / 100.0f);
+		Vector3 position(Random::range(-1.0f, 1.0f) + 9, Random::range(-1.0f, 1.0f) + 2, Random::range(-1.0f, 1.0f));
+		Vector3 scale(Random::range(0.2f, 0.5f), Random::range(0.2f, 0.5f), Random::range(0.2f, 0.5f));
+		Quaternion rotation(Random::range(-1.0f, 1.0f), Random::range(-1.0f, 1.0f), Random::range(-1.0f, 1.0f), Random::range(-1.0f, 1.0f));
 		rotation.normalize();
 		entity->setPosition(position);
 		entity->setScale(scale);
@@ -116,7 +117,7 @@ int main()
 		},
 		0.0005f,
 		particleShader);
-	particleEmitter->setPosition(Vector3(10, 0, 0));
+	particleEmitter->setPosition(Vector3(10, -3, 0));
 	particleEmitter->setRotation(Quaternion::WithAxisAngle(Vector3(1, 0, 0), radians(90)));
 	particleEmitter->setScale(0.2);
 	renderer->addEntity(particleEmitter);
@@ -128,7 +129,7 @@ int main()
 	Material *textMaterial = new Material();
 	textMaterial->setCullBackface(false);
 	Entity *textEntity = new Entity(text, textMaterial, shader);
-	textEntity->setPosition(Vector3(0, -5, 0));
+	textEntity->setPosition(Vector3(2, -5, 0));
 	renderer->addEntity(textEntity);
 
 	Clock *clock = new Clock();

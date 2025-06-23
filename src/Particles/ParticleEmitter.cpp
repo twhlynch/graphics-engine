@@ -119,12 +119,12 @@ void ParticleEmitter::addParticle()
 	Vector3 position(Random::range(-1.0f, 1.0f),
 					 Random::range(-1.0f, 1.0f),
 					 Random::range(-1.0f, 1.0f));
-	Vector3 velocity(lerp(_from.velocity[0], _to.velocity[0], Random::range(0.0f, 1.0f)),
-					 lerp(_from.velocity[1], _to.velocity[1], Random::range(0.0f, 1.0f)),
-					 lerp(_from.velocity[2], _to.velocity[2], Random::range(0.0f, 1.0f)));
-	Vector3 acceleration(lerp(_from.acceleration[0], _to.acceleration[0], Random::range(0.0f, 1.0f)),
-						 lerp(_from.acceleration[1], _to.acceleration[1], Random::range(0.0f, 1.0f)),
-						 lerp(_from.acceleration[2], _to.acceleration[2], Random::range(0.0f, 1.0f)));
+	Vector3 velocity(Random::range(_from.velocity[0], _to.velocity[0]),
+					 Random::range(_from.velocity[1], _to.velocity[1]),
+					 Random::range(_from.velocity[2], _to.velocity[2]));
+	Vector3 acceleration(Random::range(_from.acceleration[0], _to.acceleration[0]),
+						 Random::range(_from.acceleration[1], _to.acceleration[1]),
+						 Random::range(_from.acceleration[2], _to.acceleration[2]));
 
 	modelMatrix.apply(position);
 	velocity = _rotation.apply(velocity);
@@ -141,7 +141,7 @@ void ParticleEmitter::addParticle()
 			acceleration.y,
 			acceleration.z,
 		},
-		lerp(_from.lifetime, _to.lifetime, Random::range(0.0f, 1.0f)),
+		Random::range(_from.lifetime, _to.lifetime),
 		_from.size,
 		{
 			_from.color[0],
