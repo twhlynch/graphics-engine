@@ -31,7 +31,12 @@ add_executable(Renderer
 	${SOURCES}
 )
 
-target_compile_options(Renderer PRIVATE -Wall -Wextra -Wpedantic -Werror)
+set(FLAGS -Wall -Wextra -Wpedantic -Werror)
+if(OPTIMISE)
+	list(APPEND FLAGS -O3)
+endif()
+
+target_compile_options(Renderer PRIVATE ${FLAGS})
 
 target_link_libraries(Renderer
 	${OPENGL_LIBRARIES}

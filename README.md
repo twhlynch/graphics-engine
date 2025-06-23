@@ -13,21 +13,32 @@ Almost a simple graphics engine with OpenGL
 - Ensure you have installed `cmake`, `opengl`, a generator such as `make`, or `ninja`, and ran `git lfs install`
 - Run `git submodule update --init --recursive`
 - Run `git lfs pull`
-- Run `./build.sh` to build
-- Run `./build/default/Renderer` (for Makefiles. Location differs by generator)
+- Run `./build.sh -r` to build and run
 
 #### build script
+
+```bash
+  usage: ./build.sh [options] ["CMake Generator"]
+         Build the project with a specified generator (or 'default')
+options:
+         -R --release     Build Release target
+         -d --docs        Build Doxygen documentation
+         -r --run         Run after build
+         -o --optimise    Adds the -O3 compile option
+         -h --help        Show this message
+```
+
 `chmod +x build.sh` if needed.
 
 By default `./build.sh` will build the Debug version with your default CMake Generator (usually Unix Makefiles).
 
-You can optionally add `Release` to build for release, `Docs` to also generate documentation with Doxygen (must be installed), `Run` to automatically run, or specify a different CMake Generator such as `Xcode`.
+You can optionally add `-R` to build for release, `-d` to also generate documentation with Doxygen (must be installed), `-r` to automatically run, `-o` to use -O3 compiler optimisation, or specify a different CMake Generator such as `Xcode`.
 
 The build output will be in `build/default`, replacing default with a generator if specified, and within `Debug` or `Release` if supported by the generator you use.
 
-E.g.: `./build.sh "Xcode" Release` will build with `Xcode` to `build/Xcode/Release`.
+E.g.: `./build.sh "Xcode" -R` will build with `Xcode` to `build/Xcode/Release`.
 
-E.g.: `./build.sh Release Docs` will build with the default generator (usually Makefiles) to `build/default` and generate documentation to `build/default/html`.
+E.g.: `./build.sh -R -d` will build with the default generator (usually Makefiles) to `build/default` and generate documentation to `build/default/html`.
 
 > Note: Sometimes generating docs will require `sudo`
 
