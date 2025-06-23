@@ -1,8 +1,10 @@
 #include "Clock.hpp"
 #include "Loaders/OBJLoader.hpp"
+#include "Math/Angles.hpp"
 #include "Math/Quaternion.hpp"
 #include "Math/Ray.hpp"
 #include "Math/Vector3.hpp"
+#include "Particles/ParticleEmitter.hpp"
 #include "Rendering/Material.hpp"
 #include "Rendering/Mesh.hpp"
 #include "Rendering/Renderer.hpp"
@@ -96,6 +98,30 @@ int main()
 	renderer->addEntity(rayVis);
 	Mesh *pointMesh = new Mesh({0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f});
 
+	Shader *particleShader = new Shader("assets/shaders/particle_vert.glsl", "assets/shaders/particle_frag.glsl");
+	ParticleEmitter *particleEmitter = new ParticleEmitter(
+		ParticleOptions {
+			{0.0f, 0.0f, 1.0f},
+			{0.0f, 0.0f, 0.0f},
+			2.0f,
+			1.0f,
+			{0.6f, 0.2f, 0.4f},
+		},
+		ParticleOptions {
+			{0.0f, 0.0f, 0.8f},
+			{0.0f, 0.0f, 0.0f},
+			3.0f,
+			3.0f,
+			{0.9f, 0.1f, 0.1f},
+		},
+		0.0005f,
+		particleShader);
+	particleEmitter->setPosition(Vector3(10, 0, 0));
+	particleEmitter->setRotation(Quaternion::WithAxisAngle(Vector3(1, 0, 0), radians(90)));
+	particleEmitter->setScale(0.2);
+	renderer->addEntity(particleEmitter);
+	entities.push_back(particleEmitter);
+
 	BitmapFont *font = new BitmapFont("assets/bitmap.txt");
 	Text *text = new Text(font);
 	text->setText("0123456789\nABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n!@#$%^&*-+=_(){}[]\\/|<>`,.'\";:");
@@ -121,6 +147,8 @@ int main()
 		{
 			entity->setRotation((entity->getRotation() * Quaternion::WithAxisAngle(Vector3(0, 1, 0), delta)).normalized());
 		}
+
+		particleEmitter->setRotation((particleEmitter->getRotation() * Quaternion::WithAxisAngle(Vector3(0, 1, 0), delta * 5)).normalized());
 
 		if (window->isPressing(GLFW_KEY_SPACE))
 		{
