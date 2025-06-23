@@ -14,6 +14,7 @@ public:
 	void setCamera(Camera *camera);
 	void addEntity(Entity *entity, bool alpha = false);
 	void draw();
+	void update(float delta);
 
 private:
 	std::vector<Entity *> _entities;

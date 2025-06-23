@@ -37,6 +37,19 @@ void Renderer::addEntity(Entity *entity, bool alpha)
 	}
 }
 
+void Renderer::update(float delta)
+{
+	for (Entity *entity : _entities)
+	{
+		entity->update(delta);
+	}
+
+	for (Entity *entity : _transparentEntities)
+	{
+		entity->update(delta);
+	}
+}
+
 void Renderer::draw()
 {
 	if (!_camera)

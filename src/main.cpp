@@ -116,6 +116,8 @@ int main()
 
 		controller->update(delta);
 
+		renderer->update(delta);
+
 		for (Entity *entity : entities)
 		{
 			entity->setRotation((entity->getRotation() * Quaternion::WithAxisAngle(Vector3(0, 1, 0), delta)).normalized());

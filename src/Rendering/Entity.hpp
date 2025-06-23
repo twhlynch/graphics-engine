@@ -11,6 +11,7 @@ class Entity
 {
 public:
 	Entity(Mesh *mesh, Material *material, Shader *shader);
+	virtual ~Entity();
 
 	void setPosition(const Vector3 &position);
 	void setRotation(const Quaternion &rotation);
@@ -36,11 +37,12 @@ public:
 	Mesh *getMesh() const;
 	void setMesh(Mesh *mesh);
 
-	void draw();
+	virtual void draw();
+	virtual void update(float delta);
 
 	Matrix4 computeModelMatrix() const;
 
-private:
+protected:
 	Mesh *_mesh;
 	Material *_material;
 	Shader *_shader;

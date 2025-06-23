@@ -36,6 +36,10 @@ Entity::Entity(Mesh *mesh, Material *material, Shader *shader) :
 	}
 }
 
+Entity::~Entity()
+{
+}
+
 void Entity::setPosition(const Vector3 &position)
 {
 	_position = position;
@@ -83,6 +87,10 @@ Mesh *Entity::getMesh() const
 void Entity::setMesh(Mesh *mesh)
 {
 	_mesh = mesh;
+}
+
+void Entity::update(float /*delta*/)
+{
 }
 
 void Entity::draw()
