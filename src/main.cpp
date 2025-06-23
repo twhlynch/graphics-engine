@@ -99,10 +99,9 @@ int main()
 	BitmapFont *font = new BitmapFont("assets/bitmap.txt");
 	Text *text = new Text(font);
 	text->setText("0123456789\nABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n!@#$%^&*-+=_(){}[]\\/|<>`,.'\";:");
-	Shader *textShader = new Shader("assets/shaders/basic_vert.glsl", "assets/shaders/basic_frag.glsl");
 	Material *textMaterial = new Material();
 	textMaterial->setCullBackface(false);
-	Entity *textEntity = new Entity(text, textMaterial, textShader);
+	Entity *textEntity = new Entity(text, textMaterial, shader);
 	textEntity->setPosition(Vector3(0, -5, 0));
 	renderer->addEntity(textEntity);
 

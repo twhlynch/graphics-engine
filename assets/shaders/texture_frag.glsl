@@ -9,8 +9,8 @@ uniform sampler2D tex;
 
 void main()
 {
-	float fogStart = 10.0;
-	float fogEnd = 30.0;
+	float fogStart = 30.0;
+	float fogEnd = 60.0;
 
 	float fogFactor = clamp((fogEnd - dist) / (fogEnd - fogStart), 0.0, 1.0);
 
