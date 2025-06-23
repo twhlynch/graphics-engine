@@ -48,3 +48,4 @@ E.g.: `./build.sh -R -d` will build with the default generator (usually Makefile
 - `E & Q`: up & down
 - `Shift`: sprint
 - `ESC`: toggle mouse lock
+- `SPACE`: cast ray
