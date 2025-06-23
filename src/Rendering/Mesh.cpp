@@ -65,6 +65,7 @@ void Mesh::refresh()
 
 		glBindBuffer(GL_ARRAY_BUFFER, _UVVBO);
 		glBufferData(GL_ARRAY_BUFFER, _texCoords.size() * sizeof(float), _texCoords.data(), GL_STATIC_DRAW);
+		_vertexCount = _vertices.size() / 3;
 	}
 }
 

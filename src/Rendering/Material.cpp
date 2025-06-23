@@ -11,7 +11,7 @@ Material::~Material()
 
 void Material::draw(Mesh *mesh, Shader *shader)
 {
-	if (_cullBackface)
+	if (_cullBackface && !_wireframe)
 	{
 		glCullFace(GL_BACK);
 		glEnable(GL_CULL_FACE);
@@ -20,20 +20,16 @@ void Material::draw(Mesh *mesh, Shader *shader)
 	{
 		glDisable(GL_CULL_FACE);
 	}
+
 	glFrontFace(GL_CW);
 
 	if (_wireframe)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		glDisable(GL_CULL_FACE);
 	}
 	else
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		if (_cullBackface)
-		{
-			glEnable(GL_CULL_FACE);
-		}
 	}
 
 	if (_texture)
