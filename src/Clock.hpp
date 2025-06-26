@@ -20,7 +20,7 @@ public:
 
 		return delta;
 	}
-	float getTime()
+	static float getTime()
 	{
 		return static_cast<float>(glfwGetTime());
 	}

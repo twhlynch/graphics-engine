@@ -42,7 +42,7 @@ public:
 
 	Matrix4 computeModelMatrix() const;
 
-protected:
+private:
 	Mesh *_mesh;
 	Material *_material;
 	Shader *_shader;

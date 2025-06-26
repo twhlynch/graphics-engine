@@ -11,8 +11,8 @@ Text::~Text()
 
 void Text::setText(const std::string &text)
 {
-	_vertices.clear();
-	_colors.clear();
+	std::vector<float> vertices;
+	std::vector<float> colors;
 
 	float xOffset = 0;
 	float yOffset = 0;
@@ -22,7 +22,7 @@ void Text::setText(const std::string &text)
 
 	for (size_t i = 0; i < text.size(); i++)
 	{
-		int ch = text.at(i);
+		int ch = static_cast<unsigned char>(text.at(i));
 
 		if (ch == '\n')
 		{
@@ -31,20 +31,20 @@ void Text::setText(const std::string &text)
 			continue;
 		}
 
-		std::vector<float> *character = _font->getCharacter(ch);
+		std::vector<float> *character = _font->getCharacter(static_cast<char>(ch));
 
 		for (size_t j = 0; j < character->size(); j += 3)
 		{
 			float x = character->at(j) + xOffset;
 			float y = character->at(j + 1) - yOffset;
 
-			_vertices.emplace_back(x);
-			_vertices.push_back(y);
-			_vertices.push_back(character->at(j + 2));
+			vertices.emplace_back(x);
+			vertices.push_back(y);
+			vertices.push_back(character->at(j + 2));
 
-			_colors.emplace_back(1);
-			_colors.emplace_back(1);
-			_colors.emplace_back(1);
+			colors.emplace_back(1);
+			colors.emplace_back(1);
+			colors.emplace_back(1);
 
 			xExtent = std::max(xExtent, x);
 			yExtent = std::max(yExtent, y);
@@ -55,11 +55,13 @@ void Text::setText(const std::string &text)
 
 	yExtent *= 0.5f;
 	xExtent *= 0.5f;
-	for (size_t i = 0; i < _vertices.size(); i += 3)
+	for (size_t i = 0; i < vertices.size(); i += 3)
 	{
-		_vertices.at(i) -= xExtent;
-		_vertices.at(i + 1) += yExtent;
+		vertices.at(i) -= xExtent;
+		vertices.at(i + 1) += yExtent;
 	}
 
+	setVertices(vertices);
+	setColors(colors);
 	changed();
 }

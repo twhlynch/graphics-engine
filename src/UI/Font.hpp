@@ -14,5 +14,8 @@ public:
 	std::vector<float> *getCharacter(const char &ch);
 
 protected:
+	void addLetter(std::vector<float> &letter);
+
+private:
 	std::vector<std::vector<float>> _letters;
 };

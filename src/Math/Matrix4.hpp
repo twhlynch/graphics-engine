@@ -16,7 +16,7 @@ public:
 		_m[0] = _m[5] = _m[10] = _m[15] = n;
 	}
 
-	inline float *data()
+	float *data()
 	{
 		return &(_m[0]);
 	}
@@ -26,7 +26,7 @@ public:
 		return _m[index];
 	}
 
-	inline Matrix4 operator*(const Matrix4 &other)
+	Matrix4 operator*(const Matrix4 &other)
 	{
 		Matrix4 result(0.0f);
 		for (int row = 0; row < 4; row++)
@@ -35,14 +35,14 @@ public:
 			{
 				for (int k = 0; k < 4; k++)
 				{
-					result._m[row + col * 4] += _m[row + k * 4] * other._m[k + col * 4];
+					result._m[row + (col * 4)] += _m[row + (k * 4)] * other._m[k + (col * 4)];
 				}
 			}
 		}
 		return result;
 	}
 
-	inline Vector3 apply(Vector3 &v) const
+	Vector3 apply(Vector3 &v) const
 	{
 		float x = v.x, y = v.y, z = v.z;
 		const float w = 1 / (_m[3] * x + _m[7] * y + _m[11] * z + _m[15]);

@@ -7,8 +7,8 @@
 ParticleEmitter::ParticleEmitter(ParticleOptions from, ParticleOptions to, float spawnRate, Shader *shader) :
 	Entity(nullptr, nullptr, shader), _from(from), _to(to), _spawnRate(spawnRate), _changed(true)
 {
-	glGenVertexArrays(1, &_VAO);
-	glBindVertexArray(_VAO);
+	glGenVertexArrays(1, &_vao);
+	glBindVertexArray(_vao);
 
 	_positionsVBO.setData(&_positions);
 	_sizesVBO.setData(&_sizes);
@@ -21,7 +21,7 @@ ParticleEmitter::ParticleEmitter(ParticleOptions from, ParticleOptions to, float
 
 ParticleEmitter::~ParticleEmitter()
 {
-	glDeleteVertexArrays(1, &_VAO);
+	glDeleteVertexArrays(1, &_vao);
 }
 
 void ParticleEmitter::refresh()
@@ -52,9 +52,9 @@ void ParticleEmitter::update(float delta)
 
 void ParticleEmitter::draw()
 {
-	_shader->use();
+	getShader()->use();
 
-	GLint modelLoc = glGetUniformLocation(_shader->getProgramID(), "model");
+	GLint modelLoc = glGetUniformLocation(getShader()->getProgramID(), "model");
 
 	if (modelLoc != -1)
 	{
@@ -69,7 +69,7 @@ void ParticleEmitter::draw()
 	glDisable(GL_CULL_FACE);
 	glFrontFace(GL_CW);
 
-	glBindVertexArray(_VAO);
+	glBindVertexArray(_vao);
 	glDrawArrays(GL_POINTS, 0, static_cast<GLsizei>(_lifetimes.size()));
 }
 
@@ -81,11 +81,11 @@ void ParticleEmitter::updateParticles(float delta)
 
 		if (_lifetimes[i] <= 0.0f)
 		{
-			_positions.erase(_positions.begin() + i * 3, _positions.begin() + (i + 1) * 3);
-			_sizes.erase(_sizes.begin() + i);
-			_colors.erase(_colors.begin() + i * 3, _colors.begin() + (i + 1) * 3);
-			_lifetimes.erase(_lifetimes.begin() + i);
-			_options.erase(_options.begin() + i);
+			_positions.erase(_positions.begin() + static_cast<long>(i) * 3, _positions.begin() + (static_cast<long>(i) + 1) * 3);
+			_sizes.erase(_sizes.begin() + static_cast<long>(i));
+			_colors.erase(_colors.begin() + static_cast<long>(i) * 3, _colors.begin() + (static_cast<long>(i) + 1) * 3);
+			_lifetimes.erase(_lifetimes.begin() + static_cast<long>(i));
+			_options.erase(_options.begin() + static_cast<long>(i));
 
 			--i;
 		}
@@ -97,13 +97,13 @@ void ParticleEmitter::updateParticles(float delta)
 		float alpha = _lifetimes[i] / lifetime;
 
 		_colors[i * 3] = lerp(_from.color[0], _to.color[0], alpha);
-		_colors[i * 3 + 1] = lerp(_from.color[1], _to.color[1], alpha);
-		_colors[i * 3 + 2] = lerp(_from.color[2], _to.color[2], alpha);
+		_colors[(i * 3) + 1] = lerp(_from.color[1], _to.color[1], alpha);
+		_colors[(i * 3) + 2] = lerp(_from.color[2], _to.color[2], alpha);
 		_sizes[i] = lerp(_from.size, _to.size, alpha);
 
 		_positions[i * 3] += _options[i].velocity[0] * delta;
-		_positions[i * 3 + 1] += _options[i].velocity[1] * delta;
-		_positions[i * 3 + 2] += _options[i].velocity[2] * delta;
+		_positions[(i * 3) + 1] += _options[i].velocity[1] * delta;
+		_positions[(i * 3) + 2] += _options[i].velocity[2] * delta;
 
 		_options[i].velocity[0] += _options[i].acceleration[0] * delta;
 		_options[i].velocity[1] += _options[i].acceleration[1] * delta;
@@ -116,19 +116,19 @@ void ParticleEmitter::updateParticles(float delta)
 void ParticleEmitter::addParticle()
 {
 	Matrix4 modelMatrix = computeModelMatrix();
-	Vector3 position(Random::range(-1.0f, 1.0f),
-					 Random::range(-1.0f, 1.0f),
-					 Random::range(-1.0f, 1.0f));
-	Vector3 velocity(Random::range(_from.velocity[0], _to.velocity[0]),
-					 Random::range(_from.velocity[1], _to.velocity[1]),
-					 Random::range(_from.velocity[2], _to.velocity[2]));
-	Vector3 acceleration(Random::range(_from.acceleration[0], _to.acceleration[0]),
-						 Random::range(_from.acceleration[1], _to.acceleration[1]),
-						 Random::range(_from.acceleration[2], _to.acceleration[2]));
+	Vector3 position(randRange(-1.0f, 1.0f),
+					 randRange(-1.0f, 1.0f),
+					 randRange(-1.0f, 1.0f));
+	Vector3 velocity(randRange(_from.velocity[0], _to.velocity[0]),
+					 randRange(_from.velocity[1], _to.velocity[1]),
+					 randRange(_from.velocity[2], _to.velocity[2]));
+	Vector3 acceleration(randRange(_from.acceleration[0], _to.acceleration[0]),
+						 randRange(_from.acceleration[1], _to.acceleration[1]),
+						 randRange(_from.acceleration[2], _to.acceleration[2]));
 
 	modelMatrix.apply(position);
-	velocity = _rotation.apply(velocity);
-	acceleration = _rotation.apply(acceleration);
+	velocity = getRotation().apply(velocity);
+	acceleration = getRotation().apply(acceleration);
 
 	ParticleOptions options = {
 		{
@@ -141,7 +141,7 @@ void ParticleEmitter::addParticle()
 			acceleration.y,
 			acceleration.z,
 		},
-		Random::range(_from.lifetime, _to.lifetime),
+		randRange(_from.lifetime, _to.lifetime),
 		_from.size,
 		{
 			_from.color[0],

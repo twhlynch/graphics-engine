@@ -21,7 +21,7 @@ Shader::~Shader()
 	glDeleteProgram(_programID);
 }
 
-void Shader::use()
+void Shader::use() const
 {
 	glUseProgram(_programID);
 }

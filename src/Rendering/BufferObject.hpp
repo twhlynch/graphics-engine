@@ -12,10 +12,10 @@ public:
 
 	void setData(std::vector<float> *data);
 
-	void bind(GLuint index, GLint size);
+	void bind(GLuint index, GLint size) const;
 	void refresh();
 
 private:
-	GLuint _VBO;
+	GLuint _vbo;
 	std::vector<float> *_data;
 };

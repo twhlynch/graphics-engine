@@ -99,8 +99,8 @@ std::vector<float> OBJLoader::reorderVertices(const std::vector<float> &vertices
 		if (index >= 0 && index * 3 + 2 < vertices.size())
 		{
 			reorderedVertices.push_back(vertices[index * 3]);
-			reorderedVertices.push_back(vertices[index * 3 + 1]);
-			reorderedVertices.push_back(vertices[index * 3 + 2]);
+			reorderedVertices.push_back(vertices[(index * 3) + 1]);
+			reorderedVertices.push_back(vertices[(index * 3) + 2]);
 		}
 		else
 		{

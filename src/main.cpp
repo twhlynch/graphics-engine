@@ -53,7 +53,7 @@ int main()
 	{
 		materialList[i]->setTexture(texture);
 		Entity *entity = new Entity(dragon, materialList[i], shaders[i]);
-		Vector3 vec(-4.0f + 4 * (float)i, 2.5f, 0.0f);
+		Vector3 vec(-4.0f + (4 * static_cast<float>(i)), 2.5f, 0.0f);
 		entity->setPosition(vec);
 		renderer->addEntity(entity, (i == 0));
 		entities.push_back(entity);
@@ -72,7 +72,7 @@ int main()
 		for (size_t j = 0; j < materialList.size(); j++)
 		{
 			Entity *entity = new Entity(meshList[i], materialList[j], shaders[j]);
-			Vector3 vec(-5.0f + 2.0f * (float)i, -1.5f * (float)j, 0.0f);
+			Vector3 vec(-5.0f + (2.0f * static_cast<float>(i)), -1.5f * static_cast<float>(j), 0.0f);
 			entity->setPosition(vec);
 			renderer->addEntity(entity);
 			entities.push_back(entity);
@@ -82,9 +82,9 @@ int main()
 	for (int i = 0; i < 100; i++)
 	{
 		Entity *entity = new Entity(meshList[4], materialList[0], shaders[0]);
-		Vector3 position(Random::range(-1.0f, 1.0f) + 9, Random::range(-1.0f, 1.0f) + 2, Random::range(-1.0f, 1.0f));
-		Vector3 scale(Random::range(0.2f, 0.5f), Random::range(0.2f, 0.5f), Random::range(0.2f, 0.5f));
-		Quaternion rotation(Random::range(-1.0f, 1.0f), Random::range(-1.0f, 1.0f), Random::range(-1.0f, 1.0f), Random::range(-1.0f, 1.0f));
+		Vector3 position(randRange(-1.0f, 1.0f) + 9, randRange(-1.0f, 1.0f) + 2, randRange(-1.0f, 1.0f));
+		Vector3 scale(randRange(0.2f, 0.5f), randRange(0.2f, 0.5f), randRange(0.2f, 0.5f));
+		Quaternion rotation(randRange(-1.0f, 1.0f), randRange(-1.0f, 1.0f), randRange(-1.0f, 1.0f), randRange(-1.0f, 1.0f));
 		rotation.normalize();
 		entity->setPosition(position);
 		entity->setScale(scale);
@@ -95,7 +95,7 @@ int main()
 
 	Ray *ray = new Ray(camera->getPosition(), camera->getForward());
 	Entity *rayVis = ray->getEntityToVisualize();
-	ray->setObjects(entities);
+	ray->setObjects(&entities);
 	renderer->addEntity(rayVis);
 	Mesh *pointMesh = new Mesh({0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f});
 
@@ -131,12 +131,12 @@ int main()
 	Entity *textEntity = new Entity(text, textMaterial, shader);
 	textEntity->setPosition(Vector3(2, -5, 0));
 	renderer->addEntity(textEntity);
+	entities.push_back(textEntity);
 
 	Clock *clock = new Clock();
 	while (!window->shouldClose())
 	{
 		float delta = clock->getDelta();
-		// float currentTime = clock->getTime();
 
 		shader->refresh();
 
@@ -151,13 +151,13 @@ int main()
 
 		particleEmitter->setRotation((particleEmitter->getRotation() * Quaternion::WithAxisAngle(Vector3(0, 1, 0), delta * 5)).normalized());
 
-		if (window->isPressing(GLFW_KEY_SPACE))
+		if (Window::isPressing(GLFW_KEY_SPACE))
 		{
 			ray->set(camera->getPosition(), camera->getForward());
 			*rayVis = *ray->getEntityToVisualize();
 
 			std::vector<Intersection> intersections = ray->cast();
-			for (Intersection intersection : intersections)
+			for (const Intersection &intersection : intersections)
 			{
 				Entity *entity = new Entity(pointMesh, materialList[2], rayVis->getShader());
 				entity->setScale(0.1f);

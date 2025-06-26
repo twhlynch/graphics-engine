@@ -12,13 +12,33 @@ class Mesh
 	friend class Material;
 
 public:
-	Mesh(const std::vector<float> vertices, const std::vector<float> colors = {}, const std::vector<float> texCoords = {});
+	Mesh(const std::vector<float> &vertices, const std::vector<float> &colors = {}, const std::vector<float> &texCoords = {});
 	~Mesh();
 
-	std::vector<float> *GetVertices()
+	std::vector<float> *getVertices()
 	{
 		return &_vertices;
 	};
+	std::vector<float> *getColors()
+	{
+		return &_vertices;
+	};
+	std::vector<float> *getTexCoords()
+	{
+		return &_vertices;
+	};
+	void setVertices(std::vector<float> &vertices)
+	{
+		_vertices = vertices;
+	}
+	void setColors(std::vector<float> &colors)
+	{
+		_colors = colors;
+	}
+	void setTexCoords(std::vector<float> &texCoords)
+	{
+		_texCoords = texCoords;
+	}
 
 	Mesh *operator+(const Mesh &other) const;
 
@@ -39,14 +59,13 @@ public:
 	static Mesh *WithCircle(float radius = 0.5f, size_t segments = 16);
 	static Mesh *WithCylinder(float radius = 0.5f, float height = 1.0f, size_t segments = 16);
 
-protected:
+private:
 	std::vector<float> _vertices;
 	std::vector<float> _colors;
 	std::vector<float> _texCoords;
 
-private:
-	GLuint _VAO;
-	BufferObject _pointsVBO, _colorsVBO, _UVVBO;
+	GLuint _vao;
+	BufferObject _pointsVBO, _colorsVBO, _texCoordsVBO;
 	size_t _vertexCount;
 	bool _changed;
 };

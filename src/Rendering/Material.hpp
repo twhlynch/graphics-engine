@@ -9,7 +9,7 @@
 class Material
 {
 public:
-	enum RenderType
+	enum RenderType : std::uint8_t
 	{
 		Points = GL_POINTS,
 		Lines = GL_LINES,

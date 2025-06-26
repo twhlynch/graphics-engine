@@ -29,15 +29,15 @@ BitmapFont::BitmapFont(const std::string &path)
 
 			std::vector<std::vector<bool>> visited(bitmap.size(), std::vector<bool>(bitmap.at(0).size(), false));
 
-			for (int j = 0; j < (int)bitmap.size(); j++)
+			for (int j = 0; j < static_cast<int>(bitmap.size()); j++)
 			{
-				for (int i = 0; i < (int)bitmap.at(j).size(); i++)
+				for (int i = 0; i < static_cast<int>(bitmap.at(j).size()); i++)
 				{
 					int y = j, x = i;
 					int width = 0, height = 0;
 
 					while (
-						x + width < (int)bitmap.at(y).size() &&
+						x + width < static_cast<int>(bitmap.at(y).size()) &&
 						bitmap.at(y).at(x + width) &&
 						!visited.at(y).at(x + width))
 					{
@@ -55,7 +55,7 @@ BitmapFont::BitmapFont(const std::string &path)
 					}
 
 					while (
-						y + height < (int)bitmap.size() &&
+						y + height < static_cast<int>(bitmap.size()) &&
 						bitmap.at(y + height).at(x) &&
 						!visited.at(y + height).at(x))
 					{
@@ -84,13 +84,13 @@ BitmapFont::BitmapFont(const std::string &path)
 					if (width != 0 && height != 0)
 					{
 						std::vector<float> rect = {
-							(float)x, -(float)y, 0,
-							(float)x + width, -(float)y - height, 0,
-							(float)x, -(float)y - height, 0,
+							static_cast<float>(x), -static_cast<float>(y), 0,
+							static_cast<float>(x) + static_cast<float>(width), -static_cast<float>(y)- static_cast<float>(height), 0,
+							static_cast<float>(x), -static_cast<float>(y)- static_cast<float>(height), 0,
 
-							(float)x, -(float)y, 0,
-							(float)x + width, -(float)y, 0,
-							(float)x + width, -(float)y - height, 0};
+							static_cast<float>(x), -static_cast<float>(y), 0,
+							static_cast<float>(x)+ static_cast<float>(width), -static_cast<float>(y), 0,
+							static_cast<float>(x)+ static_cast<float>(width), -static_cast<float>(y)- static_cast<float>(height), 0};
 
 						for (size_t i = 0; i < rect.size(); i++)
 						{
@@ -103,7 +103,7 @@ BitmapFont::BitmapFont(const std::string &path)
 			}
 
 			bitmap.erase(bitmap.begin(), bitmap.end());
-			_letters.emplace_back(vertices);
+			addLetter(vertices);
 		}
 		else
 		{

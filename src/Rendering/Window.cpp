@@ -12,7 +12,6 @@ Window::Window(int width, int height, const std::string &title) :
 	if (!glfwInit())
 	{
 		ERROR("Failed to initialize GLFW");
-		std::exit(EXIT_FAILURE);
 	}
 
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -27,7 +26,6 @@ Window::Window(int width, int height, const std::string &title) :
 	{
 		ERROR("Failed to create GLFW window");
 		glfwTerminate();
-		std::exit(EXIT_FAILURE);
 	}
 
 	glfwMakeContextCurrent(_window);
@@ -37,7 +35,6 @@ Window::Window(int width, int height, const std::string &title) :
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 	{
 		ERROR("Failed to initialize GLAD");
-		std::exit(EXIT_FAILURE);
 	}
 
 	glfwSetInputMode(_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -49,7 +46,7 @@ Window::~Window()
 	glfwTerminate();
 }
 
-void Window::pollEvents() const
+void Window::pollEvents()
 {
 	glfwPollEvents();
 }

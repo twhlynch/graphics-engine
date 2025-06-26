@@ -1,6 +1,5 @@
 #include "Camera.hpp"
 
-#include "../Logging.hpp"
 #include "../Math/Angles.hpp"
 #include "../Math/Matrix4.hpp"
 
@@ -8,7 +7,7 @@
 
 
 Camera::Camera(float fov, float aspect, float nearPlane, float farPlane) :
-	_position(Vector3()), _fov(fov), _aspectRatio(aspect), _nearClip(nearPlane), _farClip(farPlane)
+	_fov(fov), _aspectRatio(aspect), _nearClip(nearPlane), _farClip(farPlane)
 {
 	_target = Vector3(0, 0, 0);
 	Vector3 forward = (_target - _position).normalized();

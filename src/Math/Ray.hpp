@@ -19,11 +19,11 @@ public:
 	Ray(const Vector3 &position, const Vector3 &direction);
 
 	void set(const Vector3 &position, const Vector3 &direction);
-	void setObjects(const std::vector<Entity *> &objects);
+	void setObjects(std::vector<Entity *> *objects);
 
-	std::vector<Intersection> cast(const float length = 100.0f) const;
+	std::vector<Intersection> cast(float length = 100.0f) const;
 
-	Entity *getEntityToVisualize(const float length = 100.0f) const;
+	Entity *getEntityToVisualize(float length = 100.0f) const;
 
 private:
 	void intersect(Entity *entity, std::vector<Intersection> &intersections) const;
@@ -31,5 +31,5 @@ private:
 
 	Vector3 _position;
 	Vector3 _direction;
-	std::vector<Entity *> _objects;
+	std::vector<Entity *> *_objects;
 };

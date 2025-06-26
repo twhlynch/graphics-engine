@@ -50,6 +50,6 @@ private:
 
 	std::vector<float> _lifetimes;
 
-	GLuint _VAO;
+	GLuint _vao;
 	BufferObject _positionsVBO, _sizesVBO, _colorsVBO;
 };

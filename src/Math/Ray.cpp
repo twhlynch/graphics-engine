@@ -8,7 +8,7 @@
 
 Ray::Ray() {}
 Ray::Ray(const Vector3 &position, const Vector3 &direction) :
-	_position(position), _direction(direction.normalized())
+	_position(position), _direction(direction.normalized()), _objects(nullptr)
 {}
 
 void Ray::set(const Vector3 &position, const Vector3 &direction)
@@ -17,7 +17,7 @@ void Ray::set(const Vector3 &position, const Vector3 &direction)
 	_direction = direction.normalized();
 }
 
-void Ray::setObjects(const std::vector<Entity *> &objects)
+void Ray::setObjects(std::vector<Entity *> *objects)
 {
 	_objects = objects;
 }
@@ -26,7 +26,12 @@ std::vector<Intersection> Ray::cast(const float length) const
 {
 	std::vector<Intersection> intersections;
 
-	for (Entity *entity : _objects)
+	if (!_objects)
+	{
+		return intersections;
+	}
+
+	for (Entity *entity : *_objects)
 	{
 		float distance = _position.distance(entity->getPosition());
 		if (distance <= length)
@@ -40,7 +45,12 @@ std::vector<Intersection> Ray::cast(const float length) const
 
 void Ray::intersect(Entity *entity, std::vector<Intersection> &intersections) const
 {
-	std::vector<float> *vertices = entity->getMesh()->GetVertices();
+	Mesh *mesh = entity->getMesh();
+	if (!mesh)
+	{
+		return;
+	}
+	std::vector<float> *vertices = mesh->getVertices();
 	Matrix4 matrix = entity->computeModelMatrix();
 
 	for (size_t i = 0; i < vertices->size(); i += 9)
@@ -60,8 +70,6 @@ void Ray::intersect(Entity *entity, std::vector<Intersection> &intersections) co
 			intersections.emplace_back(Intersection({*point, entity}));
 		}
 	}
-
-	return;
 }
 
 // https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm#C++_implementation
@@ -77,7 +85,7 @@ Vector3 *Ray::intersectTriangle(const Vector3 &a, const Vector3 &b, const Vector
 		return nullptr; // parallel
 	}
 
-	float inv_det = 1.0 / det;
+	float inv_det = 1.0f / det;
 	Vector3 s = _position - a;
 	float u = inv_det * s.dot(ray_cross_e2);
 
@@ -100,13 +108,11 @@ Vector3 *Ray::intersectTriangle(const Vector3 &a, const Vector3 &b, const Vector
 	{
 		return new Vector3(_position + _direction * t); // intersection
 	}
-	else
-	{
-		return nullptr; // line intersection
-	}
+
+	return nullptr; // line intersection
 }
 
-Entity *Ray::getEntityToVisualize(const float length) const
+Entity *Ray::getEntityToVisualize(float length) const
 {
 	Shader *shader = new Shader("assets/shaders/basic_vert.glsl", "assets/shaders/basic_frag.glsl");
 	Material *material = new Material();

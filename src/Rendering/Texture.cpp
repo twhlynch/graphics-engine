@@ -25,7 +25,7 @@ Texture::Texture(const std::string &path)
 	}
 	if (data)
 	{
-		GLenum format = GL_RGB;
+		GLint format = GL_RGB;
 		if (nrChannels == 4)
 		{
 			format = GL_RGBA;

@@ -20,118 +20,124 @@ public:
 	Vector3(const float x, const float y, const float z) :
 		x(x), y(y), z(z)
 	{}
-	Vector3(const Vector3 &other)
+	Vector3(const Vector3 &other) :
+		x(other.x), y(other.y), z(other.z)
 	{
-		*this = other;
 	}
 
-	inline void operator=(const Vector3 &other)
+	void swap(Vector3 &other) noexcept
 	{
-		x = other.x;
-		y = other.y;
-		z = other.z;
+		std::swap(x, other.x);
+		std::swap(y, other.y);
+		std::swap(z, other.z);
 	}
 
-	inline bool operator==(const Vector3 &other) const
+	Vector3 &operator=(Vector3 other)
+	{
+		this->swap(other);
+		return *this;
+	}
+
+	bool operator==(const Vector3 &other) const
 	{
 		return std::abs(x - other.x) < FLT_EPSILON &&
 			   std::abs(y - other.y) < FLT_EPSILON &&
 			   std::abs(z - other.z) < FLT_EPSILON;
 	}
-	inline bool operator!=(const Vector3 &other) const
+	bool operator!=(const Vector3 &other) const
 	{
 		return !(*this == other);
 	}
 
-	inline Vector3 operator-() const
+	Vector3 operator-() const
 	{
 		return Vector3(-x, -y, -z);
 	}
 
-	inline Vector3 operator+(const Vector3 &other) const
+	Vector3 operator+(const Vector3 &other) const
 	{
 		return Vector3(x + other.x, y + other.y, z + other.z);
 	}
-	inline Vector3 operator-(const Vector3 &other) const
+	Vector3 operator-(const Vector3 &other) const
 	{
 		return Vector3(x - other.x, y - other.y, z - other.z);
 	}
-	inline Vector3 operator*(const Vector3 &other) const
+	Vector3 operator*(const Vector3 &other) const
 	{
 		return Vector3(x * other.x, y * other.y, z * other.z);
 	}
-	inline Vector3 operator/(const Vector3 &other) const
+	Vector3 operator/(const Vector3 &other) const
 	{
 		return Vector3(x / other.x, y / other.y, z / other.z);
 	}
 
-	inline Vector3 operator+(const float n) const
+	Vector3 operator+(const float n) const
 	{
 		return Vector3(x + n, y + n, z + n);
 	}
-	inline Vector3 operator-(const float n) const
+	Vector3 operator-(const float n) const
 	{
 		return Vector3(x - n, y - n, z - n);
 	}
-	inline Vector3 operator*(const float n) const
+	Vector3 operator*(const float n) const
 	{
 		return Vector3(x * n, y * n, z * n);
 	}
-	inline Vector3 operator/(const float n) const
+	Vector3 operator/(const float n) const
 	{
 		return Vector3(x / n, y / n, z / n);
 	}
 
-	inline Vector3 operator+=(const Vector3 &other) const
+	Vector3 operator+=(const Vector3 &other) const
 	{
 		return *this + other;
 	}
-	inline Vector3 operator-=(const Vector3 &other) const
+	Vector3 operator-=(const Vector3 &other) const
 	{
 		return *this - other;
 	}
-	inline Vector3 operator*=(const Vector3 &other) const
+	Vector3 operator*=(const Vector3 &other) const
 	{
 		return *this * other;
 	}
-	inline Vector3 operator/=(const Vector3 &other) const
+	Vector3 operator/=(const Vector3 &other) const
 	{
 		return *this / other;
 	}
 
-	inline Vector3 operator+=(const float n) const
+	Vector3 operator+=(const float n) const
 	{
 		return *this + n;
 	}
-	inline Vector3 operator-=(const float n) const
+	Vector3 operator-=(const float n) const
 	{
 		return *this - n;
 	}
-	inline Vector3 operator*=(const float n) const
+	Vector3 operator*=(const float n) const
 	{
 		return *this * n;
 	}
-	inline Vector3 operator/=(const float n) const
+	Vector3 operator/=(const float n) const
 	{
 		return *this / n;
 	}
 
-	inline friend std::ostream &operator<<(std::ostream &out, const Vector3 &vec)
+	friend std::ostream &operator<<(std::ostream &out, const Vector3 &vec)
 	{
 		out << "Vector3(" << vec.x << ", " << vec.y << ", " << vec.z << ")";
 		return out;
 	}
 
-	inline float max() const
+	float max() const
 	{
 		return std::max(std::max(x, y), z);
 	}
-	inline float min() const
+	float min() const
 	{
 		return std::min(std::min(x, y), z);
 	}
 
-	inline void normalize(const float l = 1.0f)
+	void normalize(const float l = 1.0f)
 	{
 		float len = length();
 
@@ -148,35 +154,35 @@ public:
 			z *= factor;
 		}
 	}
-	inline Vector3 normalized(const float l = 1.0f) const
+	Vector3 normalized(const float l = 1.0f) const
 	{
 		Vector3 vec = Vector3(*this);
 		vec.normalize(l);
 		return vec;
 	}
-	inline Vector3 cross(const Vector3 &other) const
+	Vector3 cross(const Vector3 &other) const
 	{
 		return Vector3(
-			y * other.z - z * other.y,
-			z * other.x - x * other.z,
-			x * other.y - y * other.x);
+			(y * other.z) - (z * other.y),
+			(z * other.x) - (x * other.z),
+			(x * other.y) - (y * other.x));
 	}
-	inline float length() const
+	float length() const
 	{
 		return std::sqrt(dot(*this));
 	}
-	inline float dot(const Vector3 &other) const
+	float dot(const Vector3 &other) const
 	{
-		return x * other.x + y * other.y + z * other.z;
+		return (x * other.x) + (y * other.y) + (z * other.z);
 	}
 
-	inline float distance(const Vector3 &other) const
+	float distance(const Vector3 &other) const
 	{
 		Vector3 d = *this - other;
 		return d.length();
 	}
 
-	inline Vector3 lerp(const Vector3 &other, float factor) const
+	Vector3 lerp(const Vector3 &other, float factor) const
 	{
 		return *this * (1.0f - factor) + other * factor;
 	}

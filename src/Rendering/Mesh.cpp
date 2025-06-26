@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-Mesh::Mesh(const std::vector<float> vertices, const std::vector<float> colors, const std::vector<float> texCoords) :
+Mesh::Mesh(const std::vector<float> &vertices, const std::vector<float> &colors, const std::vector<float> &texCoords) :
 	_vertices(vertices), _colors(colors), _texCoords(texCoords)
 {
 	_vertexCount = _vertices.size() / 3;
@@ -17,19 +17,19 @@ Mesh::Mesh(const std::vector<float> vertices, const std::vector<float> colors, c
 
 	_pointsVBO.setData(&_vertices);
 	_colorsVBO.setData(&_colors);
-	_UVVBO.setData(&_texCoords);
+	_texCoordsVBO.setData(&_texCoords);
 
-	glGenVertexArrays(1, &_VAO);
-	glBindVertexArray(_VAO);
+	glGenVertexArrays(1, &_vao);
+	glBindVertexArray(_vao);
 
 	_pointsVBO.bind(0, 3);
 	_colorsVBO.bind(1, 3);
-	_UVVBO.bind(2, 2);
+	_texCoordsVBO.bind(2, 2);
 }
 
 Mesh::~Mesh()
 {
-	glDeleteVertexArrays(1, &_VAO);
+	glDeleteVertexArrays(1, &_vao);
 }
 
 void Mesh::refresh()
@@ -40,7 +40,7 @@ void Mesh::refresh()
 
 		_pointsVBO.refresh();
 		_colorsVBO.refresh();
-		_UVVBO.refresh();
+		_texCoordsVBO.refresh();
 
 		_vertexCount = _vertices.size() / 3;
 	}
@@ -195,7 +195,7 @@ Mesh *Mesh::WithCircle(float radius, size_t segments)
 {
 	std::vector<float> vertices;
 
-	float offset = (2.0f * M_PI) / segments;
+	float offset = (2.0f * static_cast<float>(M_PI)) / static_cast<float>(segments);
 	float angle = 0.0f;
 	for (size_t i = 0; i < segments; i++)
 	{
@@ -223,7 +223,7 @@ Mesh *Mesh::WithCylinder(float radius, float height, size_t segments)
 
 	float hh = height * 0.5f;
 
-	float offset = (2.0f * M_PI) / segments;
+	float offset = (2.0f * static_cast<float>(M_PI)) / static_cast<float>(segments);
 	float angle = 0.0f;
 	for (size_t i = 0; i < segments; i++)
 	{

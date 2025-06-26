@@ -18,48 +18,54 @@ public:
 	Quaternion(const float x, const float y, const float z, const float w) :
 		x(x), y(y), z(z), w(w)
 	{}
-	Quaternion(const Quaternion &other)
+	Quaternion(const Quaternion &other) :
+		x(other.x), y(other.y), z(other.z), w(other.w)
 	{
-		*this = other;
 	}
 
-	inline void operator=(const Quaternion &other)
+	void swap(Quaternion &other) noexcept
 	{
-		x = other.x;
-		y = other.y;
-		z = other.z;
-		w = other.w;
+		std::swap(x, other.x);
+		std::swap(y, other.y);
+		std::swap(z, other.z);
+		std::swap(w, other.w);
 	}
 
-	inline bool operator==(const Quaternion &other) const
+	Quaternion &operator=(Quaternion other)
+	{
+		this->swap(other);
+		return *this;
+	}
+
+	bool operator==(const Quaternion &other) const
 	{
 		return std::abs(x - other.x) < FLT_EPSILON &&
 			   std::abs(y - other.y) < FLT_EPSILON &&
 			   std::abs(z - other.z) < FLT_EPSILON &&
 			   std::abs(w - other.w) < FLT_EPSILON;
 	}
-	inline bool operator!=(const Quaternion &other) const
+	bool operator!=(const Quaternion &other) const
 	{
 		return !(*this == other);
 	}
 
-	inline Quaternion operator+(const Quaternion &other) const
+	Quaternion operator+(const Quaternion &other) const
 	{
 		return Quaternion(x + other.x, y + other.y, z + other.z, w + other.w);
 	}
-	inline Quaternion operator-(const Quaternion &other) const
+	Quaternion operator-(const Quaternion &other) const
 	{
 		return Quaternion(x - other.x, y - other.y, z - other.z, w - other.w);
 	}
-	inline Quaternion operator*(const Quaternion &other) const
+	Quaternion operator*(const Quaternion &other) const
 	{
 		return Quaternion(
-			x * other.w + y * other.z - z * other.y + w * other.x,
-			-x * other.z + y * other.w + z * other.x + w * other.y,
-			x * other.y - y * other.x + z * other.w + w * other.z,
-			-x * other.x - y * other.y - z * other.z + w * other.w);
+			(x * other.w) + (y * other.z) - (z * other.y) + (w * other.x),
+			(-x * other.z) + (y * other.w) + (z * other.x) + (w * other.y),
+			(x * other.y) - (y * other.x) + (z * other.w) + (w * other.z),
+			(-x * other.x) - (y * other.y) - (z * other.z) + (w * other.w));
 	}
-	inline Quaternion operator/(const Quaternion &other) const
+	Quaternion operator/(const Quaternion &other) const
 	{
 		return Quaternion(
 			(x * other.w - w * other.x - z * other.y + y * other.z) / (other.w * other.w + other.x * other.x + other.y * other.y + other.z * other.z),
@@ -68,57 +74,57 @@ public:
 			(w * other.w + x * other.x + y * other.y + z * other.z) / (other.w * other.w + other.x * other.x + other.y * other.y + other.z * other.z));
 	}
 
-	inline Quaternion operator*(const float n) const
+	Quaternion operator*(const float n) const
 	{
 		return Quaternion(x * n, y * n, z * n, w * n);
 	}
-	inline Quaternion operator/(const float n) const
+	Quaternion operator/(const float n) const
 	{
 		return Quaternion(x / n, y / n, z / n, w / n);
 	}
 
-	inline Quaternion operator+=(const Quaternion &other) const
+	Quaternion operator+=(const Quaternion &other) const
 	{
 		return *this + other;
 	}
-	inline Quaternion operator-=(const Quaternion &other) const
+	Quaternion operator-=(const Quaternion &other) const
 	{
 		return *this - other;
 	}
-	inline Quaternion operator*=(const Quaternion &other) const
+	Quaternion operator*=(const Quaternion &other) const
 	{
 		return *this * other;
 	}
-	inline Quaternion operator/=(const Quaternion &other) const
+	Quaternion operator/=(const Quaternion &other) const
 	{
 		return *this / other;
 	}
 
-	inline Quaternion operator*=(const float n) const
+	Quaternion operator*=(const float n) const
 	{
 		return *this * n;
 	}
-	inline Quaternion operator/=(const float n) const
+	Quaternion operator/=(const float n) const
 	{
 		return *this / n;
 	}
 
-	inline friend std::ostream &operator<<(std::ostream &out, const Quaternion &quat)
+	friend std::ostream &operator<<(std::ostream &out, const Quaternion &quat)
 	{
 		out << "Quaternion(" << quat.x << ", " << quat.y << ", " << quat.z << ", " << quat.w << ")";
 		return out;
 	}
 
-	inline float max() const
+	float max() const
 	{
 		return std::max(std::max(std::max(x, y), z), w);
 	}
-	inline float min() const
+	float min() const
 	{
 		return std::min(std::min(std::min(x, y), z), w);
 	}
 
-	inline void normalize()
+	void normalize()
 	{
 		float len = length();
 
@@ -137,21 +143,21 @@ public:
 			w *= factor;
 		}
 	}
-	inline Quaternion normalized() const
+	Quaternion normalized() const
 	{
 		Quaternion quat(*this);
 		quat.normalize();
 		return quat;
 	}
-	inline float length() const
+	float length() const
 	{
 		return std::sqrt(dot(*this));
 	}
-	inline float dot(const Quaternion &other) const
+	float dot(const Quaternion &other) const
 	{
-		return x * other.x + y * other.y + z * other.z + w * other.w;
+		return (x * other.x) + (y * other.y) + (z * other.z) + (w * other.w);
 	}
-	inline void inverse()
+	void inverse()
 	{
 		float d = dot(*this);
 
@@ -160,37 +166,37 @@ public:
 		z = -z / d;
 		w /= d;
 	}
-	inline Quaternion inversed()
+	Quaternion inversed()
 	{
 		Quaternion quat(*this);
 		quat.inverse();
 		return quat;
 	}
-	inline void conjugate()
+	void conjugate()
 	{
 		x = -x;
 		y = -y;
 		z = -z;
 	}
-	inline Quaternion conjugated()
+	Quaternion conjugated()
 	{
 		Quaternion quat(*this);
 		quat.conjugate();
 		return quat;
 	}
 
-	inline float distance(const Quaternion &other) const
+	float distance(const Quaternion &other) const
 	{
 		Quaternion d = *this - other;
 		return d.length();
 	}
 
-	inline Quaternion lerp(const Quaternion &other, float factor) const
+	Quaternion lerp(const Quaternion &other, float factor) const
 	{
 		return *this * (1.0f - factor) + other * factor;
 	}
 
-	inline Vector3 apply(Vector3 &vec) const
+	Vector3 apply(Vector3 &vec) const
 	{
 		Vector3 u(x, y, z);
 		Vector3 v = u.cross(vec) * 2.0f;
@@ -222,10 +228,10 @@ public:
 		float crcp = cr * cp;
 
 		return Quaternion(
-			srcp * cy - crsp * sy,
-			crsp * cy + srcp * sy,
-			crcp * sy - srsp * cy,
-			crcp * cy + srsp * sy);
+			(srcp * cy) - (crsp * sy),
+			(crsp * cy) + (srcp * sy),
+			(crcp * sy) - (srsp * cy),
+			(crcp * cy) + (srsp * sy));
 	}
 
 	float x, y, z, w;

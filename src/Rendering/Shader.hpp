@@ -11,17 +11,17 @@ public:
 	Shader(const std::string &vertexPath, const std::string &fragmentPath);
 	~Shader();
 
-	void use();
+	void use() const;
 	void refresh();
 
 	GLuint getProgramID() const;
 
 private:
-	std::string loadFile(const std::string &path);
-	GLuint compileShader(GLenum type, const std::string &src);
-	GLuint linkProgram(const std::string &vs, const std::string &fs);
+	static std::string loadFile(const std::string &path);
+	static GLuint compileShader(GLenum type, const std::string &src);
+	static GLuint linkProgram(const std::string &vs, const std::string &fs);
 
-	bool hasChanged(const std::string &path, std::filesystem::file_time_type &lastTime);
+	static bool hasChanged(const std::string &path, std::filesystem::file_time_type &lastTime);
 
 	std::string _vertexPath, _fragmentPath;
 	std::filesystem::file_time_type _lastVertexWrite, _lastFragmentWrite;

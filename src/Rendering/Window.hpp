@@ -9,7 +9,7 @@ struct GLFWwindow;
 
 class Window
 {
-	enum KeyState
+	enum KeyState : std::uint8_t
 	{
 		RELEASED,
 		HELD,
@@ -20,7 +20,7 @@ public:
 	Window(int width, int height, const std::string &title);
 	~Window();
 
-	void pollEvents() const;
+	static void pollEvents();
 	void swapBuffers() const;
 	bool shouldClose() const;
 	void update();
@@ -34,8 +34,8 @@ public:
 		return _windowActive;
 	}
 
-	bool isPressing(int key);
-	bool isHolding(int key);
+	static bool isPressing(int key);
+	static bool isHolding(int key);
 
 	static std::map<int, KeyState> _keys;
 

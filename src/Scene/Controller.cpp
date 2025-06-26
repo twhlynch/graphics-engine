@@ -30,34 +30,34 @@ void Controller::update(float delta)
 void Controller::processKeyboard(float delta)
 {
 	float currentSpeed = _speed;
-	if (_window->isHolding(GLFW_KEY_LEFT_SHIFT))
+	if (Window::isHolding(GLFW_KEY_LEFT_SHIFT))
 	{
 		currentSpeed *= _sprintMultiplier;
 	}
 
 	Vector3 direction(0.0f, 0.0f, 0.0f);
 
-	if (_window->isHolding(GLFW_KEY_W))
+	if (Window::isHolding(GLFW_KEY_W))
 	{
 		direction.z -= 1.0f;
 	}
-	if (_window->isHolding(GLFW_KEY_S))
+	if (Window::isHolding(GLFW_KEY_S))
 	{
 		direction.z += 1.0f;
 	}
-	if (_window->isHolding(GLFW_KEY_A))
+	if (Window::isHolding(GLFW_KEY_A))
 	{
 		direction.x -= 1.0f;
 	}
-	if (_window->isHolding(GLFW_KEY_D))
+	if (Window::isHolding(GLFW_KEY_D))
 	{
 		direction.x += 1.0f;
 	}
-	if (_window->isHolding(GLFW_KEY_Q))
+	if (Window::isHolding(GLFW_KEY_Q))
 	{
 		direction.y -= 1.0f;
 	}
-	if (_window->isHolding(GLFW_KEY_E))
+	if (Window::isHolding(GLFW_KEY_E))
 	{
 		direction.y += 1.0f;
 	}
@@ -111,14 +111,7 @@ void Controller::processMouse()
 	_yaw += xoffset;
 	_pitch += yoffset;
 
-	if (_pitch > 89.0f)
-	{
-		_pitch = 89.0f;
-	}
-	if (_pitch < -89.0f)
-	{
-		_pitch = -89.0f;
-	}
+	_pitch = std::max(-89.0f, std::min(_pitch, 89.0f));
 
 	Vector3 front;
 	front.x = cos(radians(_yaw)) * cos(radians(_pitch));

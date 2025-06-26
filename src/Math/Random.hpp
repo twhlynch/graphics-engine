@@ -1,18 +1,22 @@
 #pragma once
 
+#include <chrono>
 #include <random>
 
-class Random
+template <typename T>
+static T randRange(T min, T max)
 {
-public:
-	static void seed(unsigned int s)
-	{
-		srand(s);
-	}
+	std::mt19937 engine(static_cast<unsigned int>(std::chrono::high_resolution_clock::now().time_since_epoch().count()));
 
-	template <typename T>
-	static T range(T min, T max)
+	if constexpr (std::is_integral_v<T>)
 	{
-		return min + static_cast<T>(rand()) / (static_cast<T>(RAND_MAX / (max - min)));
+		std::uniform_int_distribution<T> dist(min, max);
+		return dist(engine);
 	}
-};
+	else if constexpr (std::is_floating_point_v<T>)
+	{
+		std::uniform_real_distribution<T> dist(min, max);
+		return dist(engine);
+	}
+	return T {};
+}
