@@ -53,7 +53,7 @@ void Ray::intersect(Entity *entity, std::vector<Intersection> &intersections) co
 	std::vector<float> *vertices = mesh->getVertices();
 	Matrix4 matrix = entity->computeModelMatrix();
 
-	for (int i = 0; i < static_cast<int>(vertices->size()) - 9; i += 9)
+	for (int i = 0; i < static_cast<int>(vertices->size()) - 8; i += 9)
 	{
 		Vector3 a(vertices->at(i), vertices->at(i + 1), vertices->at(i + 2));
 		Vector3 b(vertices->at(i + 3), vertices->at(i + 4), vertices->at(i + 5));
