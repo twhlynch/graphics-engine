@@ -17,7 +17,7 @@ void Ray::set(const Vector3 &position, const Vector3 &direction)
 	_direction = direction.normalized();
 }
 
-void Ray::setObjects(std::vector<Entity *> *objects)
+void Ray::setObjects(std::vector<Object *> *objects)
 {
 	_objects = objects;
 }
@@ -31,12 +31,16 @@ std::vector<Intersection> Ray::cast(const float length) const
 		return intersections;
 	}
 
-	for (Entity *entity : *_objects)
+	for (Object *object : *_objects)
 	{
-		float distance = _position.distance(entity->getPosition());
-		if (distance <= length)
+		Entity *entity = dynamic_cast<Entity *>(object);
+		if (entity)
 		{
-			intersect(entity, intersections);
+			float distance = _position.distance(entity->getPosition());
+			if (distance <= length)
+			{
+				intersect(entity, intersections);
+			}
 		}
 	}
 

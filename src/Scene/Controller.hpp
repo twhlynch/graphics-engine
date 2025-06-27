@@ -2,15 +2,17 @@
 
 #include "../Rendering/Window.hpp"
 #include "../Scene/Camera.hpp"
+#include "../Scene/Object.hpp"
 
 namespace Engine
 {
-class Controller
+class Controller : public Object
 {
 public:
 	Controller(Camera *camera, Window *window, float speed = 5.0f, float sprintMultiplier = 5.0f, float sensitivity = 0.2f);
 
-	void update(float delta);
+	void update(float delta) override;
+	void draw() override {}
 
 private:
 	void processKeyboard(float delta);

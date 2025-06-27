@@ -4,7 +4,7 @@
 namespace Engine
 {
 Material::Material() :
-	_texture(nullptr), _renderType(Triangles), _wireframe(false), _cullBackface(true)
+	_texture(nullptr), _renderType(Triangles), _wireframe(false), _cullBackface(true), _transparent(false)
 {
 }
 Material::~Material()
@@ -62,5 +62,9 @@ void Material::setWireframe(bool value)
 void Material::setCullBackface(bool value)
 {
 	_cullBackface = value;
+}
+void Material::setTransparent(bool value)
+{
+	_transparent = value;
 }
 } // namespace Engine

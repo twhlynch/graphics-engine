@@ -35,11 +35,18 @@ public:
 	void setRenderType(RenderType type);
 	void setWireframe(bool value);
 	void setCullBackface(bool value);
+	void setTransparent(bool value);
+
+	bool isTransparent() const
+	{
+		return _transparent;
+	}
 
 private:
 	Texture *_texture;
 	GLuint _renderType;
 	bool _wireframe;
 	bool _cullBackface;
+	bool _transparent;
 };
 } // namespace Engine

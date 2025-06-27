@@ -1,8 +1,7 @@
 #pragma once
 
-#include "../Rendering/Entity.hpp"
 #include "../Scene/Camera.hpp"
-#include <vector>
+#include "../Scene/Scene.hpp"
 
 namespace Engine
 {
@@ -13,13 +12,9 @@ public:
 	~Renderer();
 
 	void setCamera(Camera *camera);
-	void addEntity(Entity *entity, bool alpha = false);
-	void draw();
-	void update(float delta);
+	void draw(Scene *scene);
 
 private:
-	std::vector<Entity *> _entities;
-	std::vector<Entity *> _transparentEntities;
 	Camera *_camera;
 };
 } // namespace Engine

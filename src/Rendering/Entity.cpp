@@ -89,10 +89,6 @@ void Entity::setMesh(Mesh *mesh)
 	_mesh = mesh;
 }
 
-void Entity::update(float /*delta*/)
-{
-}
-
 void Entity::draw()
 {
 	if (!_shader)

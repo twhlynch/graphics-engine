@@ -1,5 +1,6 @@
 #include "Renderer.hpp"
 #include "../Logging/Logging.hpp"
+#include "../Rendering/Entity.hpp"
 #include <glad/glad.h>
 
 namespace Engine
@@ -24,38 +25,46 @@ void Renderer::setCamera(Camera *camera)
 	_camera = camera;
 }
 
-void Renderer::addEntity(Entity *entity, bool alpha)
-{
-	if (!alpha)
-	{
-		_entities.push_back(entity);
-	}
-	else
-	{
-		_transparentEntities.push_back(entity);
-	}
-}
-
-void Renderer::update(float delta)
-{
-	for (Entity *entity : _entities)
-	{
-		entity->update(delta);
-	}
-
-	for (Entity *entity : _transparentEntities)
-	{
-		entity->update(delta);
-	}
-}
-
-void Renderer::draw()
+void Renderer::draw(Scene *scene)
 {
 	if (!_camera)
 	{
 		WARN("No camera set!");
 		return;
 	}
+
+	std::vector<Object *> *objects = scene->getObjects();
+
+	std::vector<Entity *> entities;
+	std::vector<Entity *> transparentEntities;
+	std::vector<Object *> otherObjects;
+
+	for (Object *object : *objects)
+	{
+		Entity *entity = dynamic_cast<Entity *>(object);
+		if (entity)
+		{
+			Material *material = entity->getMaterial();
+			if (material && material->isTransparent())
+			{
+				transparentEntities.push_back(entity);
+			}
+			else
+			{
+				entities.push_back(entity);
+			}
+		}
+		else
+		{
+			otherObjects.push_back(object);
+		}
+	}
+
+	std::sort(transparentEntities.begin(), transparentEntities.end(),
+			  [this](const Entity *a, const Entity *b) {
+				  Vector3 camPos = this->_camera->getPosition();
+				  return camPos.distance(a->getPosition()) > camPos.distance(b->getPosition());
+			  });
 
 	glDepthMask(GL_TRUE);
 
@@ -64,7 +73,7 @@ void Renderer::draw()
 	Matrix4 view = _camera->getViewMatrix();
 	Matrix4 projection = _camera->getProjectionMatrix();
 
-	for (Entity *entity : _entities)
+	for (Entity *entity : entities)
 	{
 		Shader *shader = entity->getShader();
 		if (!shader)
@@ -101,15 +110,10 @@ void Renderer::draw()
 
 	glDepthMask(GL_FALSE);
 
-	std::sort(_transparentEntities.begin(), _transparentEntities.end(),
-			  [this](const Entity *a, const Entity *b) {
-				  Vector3 camPos = this->_camera->getPosition();
-				  return camPos.distance(a->getPosition()) > camPos.distance(b->getPosition());
-			  });
 
 	glEnable(GL_BLEND);
 
-	for (Entity *entity : _transparentEntities)
+	for (Entity *entity : transparentEntities)
 	{
 		Shader *shader = entity->getShader();
 		if (!shader)
@@ -145,5 +149,10 @@ void Renderer::draw()
 	}
 
 	glDisable(GL_BLEND);
+
+	for (Object *object : otherObjects)
+	{
+		object->draw();
+	}
 }
 } // namespace Engine

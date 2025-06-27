@@ -6,14 +6,15 @@
 #include "../Rendering/Material.hpp"
 #include "../Rendering/Mesh.hpp"
 #include "../Rendering/Shader.hpp"
+#include "../Scene/Object.hpp"
 
 namespace Engine
 {
-class Entity
+class Entity : public Object
 {
 public:
 	Entity(Mesh *mesh, Material *material, Shader *shader);
-	virtual ~Entity();
+	~Entity();
 
 	void setPosition(const Vector3 &position);
 	void setRotation(const Quaternion &rotation);
@@ -39,8 +40,8 @@ public:
 	Mesh *getMesh() const;
 	void setMesh(Mesh *mesh);
 
-	virtual void draw();
-	virtual void update(float delta);
+	void draw() override;
+	void update(float /*delta*/) override {}
 
 	Matrix4 computeModelMatrix() const;
 

@@ -2,6 +2,7 @@
 
 #include "../Math/Vector3.hpp"
 #include "../Rendering/Entity.hpp"
+#include "../Scene/Object.hpp"
 #include <vector>
 
 namespace Engine
@@ -20,7 +21,7 @@ public:
 	Ray(const Vector3 &position, const Vector3 &direction);
 
 	void set(const Vector3 &position, const Vector3 &direction);
-	void setObjects(std::vector<Entity *> *objects);
+	void setObjects(std::vector<Object *> *objects);
 
 	std::vector<Intersection> cast(float length = 100.0f) const;
 
@@ -32,6 +33,6 @@ private:
 
 	Vector3 _position;
 	Vector3 _direction;
-	std::vector<Entity *> *_objects;
+	std::vector<Object *> *_objects;
 };
 } // namespace Engine
