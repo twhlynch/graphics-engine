@@ -65,9 +65,9 @@ mkdir -p "build/$folder_name"
 cd "build/$folder_name"
 
 if [[ -n "$generator" ]]; then
-	cmake -G "$generator" -DGENERATE_DOCUMENTATION="$generate_docs" -DOPTIMISE="$optimise" ../..
+	cmake -G "$generator" -DGENERATE_DOCUMENTATION="$generate_docs" -DOPTIMISE="$optimise" -DCMAKE_BUILD_TYPE="$config" ../..
 else
-	cmake -DGENERATE_DOCUMENTATION="$generate_docs" -DOPTIMISE="$optimise" ../..
+	cmake -DGENERATE_DOCUMENTATION="$generate_docs" -DOPTIMISE="$optimise" -DCMAKE_BUILD_TYPE="$config" ../..
 fi
 
 cmake --build . --config "$config"

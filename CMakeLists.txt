@@ -32,6 +32,8 @@ add_executable(${NAME}
 	${SOURCES}
 )
 
+add_compile_definitions("BUILD_DEBUG=$<CONFIG:Debug>")
+
 set(FLAGS -Wall -Wextra -Wpedantic -Werror)
 if(OPTIMISE)
 	list(APPEND FLAGS -O3)
