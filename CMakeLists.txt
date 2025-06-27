@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
-project(Renderer C CXX)
+set(NAME Engine)
+project(${NAME} C CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -27,7 +28,7 @@ file(GLOB_RECURSE SOURCES
 	src/*.hpp
 )
 
-add_executable(Renderer
+add_executable(${NAME}
 	${SOURCES}
 )
 
@@ -36,9 +37,9 @@ if(OPTIMISE)
 	list(APPEND FLAGS -O3)
 endif()
 
-target_compile_options(Renderer PRIVATE ${FLAGS})
+target_compile_options(${NAME} PRIVATE ${FLAGS})
 
-target_link_libraries(Renderer
+target_link_libraries(${NAME}
 	${OPENGL_LIBRARIES}
 	glfw
 	glad_c
@@ -51,7 +52,7 @@ add_custom_target(assets
 	COMMENT "Copying assets to the build directory"
 )
 
-add_dependencies(Renderer assets)
+add_dependencies(${NAME} assets)
 
 # MARK: Docs
 if(GENERATE_DOCUMENTATION)

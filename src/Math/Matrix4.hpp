@@ -3,6 +3,8 @@
 #include "Quaternion.hpp"
 #include "Vector3.hpp"
 
+namespace Engine
+{
 class Matrix4
 {
 public:
@@ -135,3 +137,4 @@ public:
 private:
 	float _m[16];
 };
+} // namespace Engine

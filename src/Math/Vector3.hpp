@@ -1,11 +1,12 @@
 #pragma once
 
-
 #include <algorithm>
 #include <cmath>
 #include <float.h>
 #include <ostream>
 
+namespace Engine
+{
 class Vector3
 {
 public:
@@ -189,3 +190,4 @@ public:
 
 	float x, y, z;
 };
+} // namespace Engine

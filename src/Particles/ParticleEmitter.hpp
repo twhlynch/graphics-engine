@@ -1,12 +1,13 @@
 #pragma once
 
-#include <glad/glad.h>
-#include <vector>
-
 #include "../Rendering/BufferObject.hpp"
 #include "../Rendering/Entity.hpp"
 #include "../Rendering/Shader.hpp"
+#include <glad/glad.h>
+#include <vector>
 
+namespace Engine
+{
 struct ParticleOptions
 {
 	float velocity[3];	   // vx, vy, vz // random range
@@ -53,3 +54,4 @@ private:
 	GLuint _vao;
 	BufferObject _positionsVBO, _sizesVBO, _colorsVBO;
 };
+} // namespace Engine

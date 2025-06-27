@@ -1,5 +1,7 @@
-#include "../UI/Text.hpp"
+#include "Text.hpp"
 
+namespace Engine
+{
 Text::Text(Font *font) :
 	Mesh({}), _font(font)
 {
@@ -65,3 +67,4 @@ void Text::setText(const std::string &text)
 	setColors(colors);
 	changed();
 }
+} // namespace Engine

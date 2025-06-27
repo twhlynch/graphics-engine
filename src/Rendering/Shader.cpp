@@ -1,11 +1,11 @@
 #include "Shader.hpp"
-
 #include "../Logging.hpp"
-
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
+namespace Engine
+{
 Shader::Shader(const std::string &vertexPath, const std::string &fragmentPath) :
 	_vertexPath(vertexPath), _fragmentPath(fragmentPath)
 {
@@ -124,3 +124,4 @@ GLuint Shader::getProgramID() const
 {
 	return _programID;
 }
+} // namespace Engine

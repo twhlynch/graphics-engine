@@ -1,12 +1,13 @@
 #pragma once
 
 #include <glad/glad.h>
-
 #include <map>
 #include <string>
 
 struct GLFWwindow;
 
+namespace Engine
+{
 class Window
 {
 	enum KeyState : std::uint8_t
@@ -46,3 +47,4 @@ private:
 	GLFWwindow *_window;
 	bool _windowActive;
 };
+} // namespace Engine

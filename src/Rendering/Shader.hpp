@@ -1,10 +1,11 @@
 #pragma once
 
-#include <glad/glad.h>
-
 #include <filesystem>
+#include <glad/glad.h>
 #include <string>
 
+namespace Engine
+{
 class Shader
 {
 public:
@@ -27,3 +28,4 @@ private:
 	std::filesystem::file_time_type _lastVertexWrite, _lastFragmentWrite;
 	GLuint _programID;
 };
+} // namespace Engine

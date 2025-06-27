@@ -1,11 +1,11 @@
 #pragma once
 
+#include "../Rendering/BufferObject.hpp"
 #include <glad/glad.h>
-
 #include <vector>
 
-#include "../Rendering/BufferObject.hpp"
-
+namespace Engine
+{
 class Material;
 class Mesh
 {
@@ -69,3 +69,4 @@ private:
 	size_t _vertexCount;
 	bool _changed;
 };
+} // namespace Engine

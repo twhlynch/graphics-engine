@@ -1,10 +1,11 @@
 #pragma once
 
-#include <glad/glad.h>
-
 #include "../Rendering/Mesh.hpp"
 #include "../UI/Font.hpp"
+#include <glad/glad.h>
 
+namespace Engine
+{
 class Text : public Mesh
 {
 public:
@@ -15,3 +16,4 @@ public:
 
 	Font *_font;
 };
+} // namespace Engine

@@ -73,9 +73,9 @@ fi
 cmake --build . --config "$config"
 
 if [[ $run == true ]]; then
-	executable="Renderer"
+	executable="Engine"
 	if [[ -d "$config" ]]; then
-		executable="$config/Renderer"
+		executable="$config/Engine"
 	fi
 
 	./$executable

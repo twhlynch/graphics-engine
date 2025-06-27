@@ -1,9 +1,9 @@
 #include "Window.hpp"
-
 #include "../Logging.hpp"
-
 #include <GLFW/glfw3.h>
 
+namespace Engine
+{
 std::map<int, Window::KeyState> Window::_keys;
 
 Window::Window(int width, int height, const std::string &title) :
@@ -118,3 +118,4 @@ void Window::update()
 		}
 	}
 }
+} // namespace Engine

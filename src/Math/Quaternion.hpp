@@ -1,12 +1,13 @@
 #pragma once
 
 #include "../Math/Vector3.hpp"
-
 #include <algorithm>
 #include <cmath>
 #include <float.h>
 #include <ostream>
 
+namespace Engine
+{
 class Quaternion
 {
 public:
@@ -236,3 +237,4 @@ public:
 
 	float x, y, z, w;
 };
+} // namespace Engine

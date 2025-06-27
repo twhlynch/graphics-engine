@@ -2,6 +2,8 @@
 
 #include <vector>
 
+namespace Engine
+{
 class Font
 {
 public:
@@ -19,3 +21,4 @@ protected:
 private:
 	std::vector<std::vector<float>> _letters;
 };
+} // namespace Engine

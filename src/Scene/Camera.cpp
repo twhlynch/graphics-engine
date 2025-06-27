@@ -1,11 +1,10 @@
 #include "Camera.hpp"
-
 #include "../Math/Angles.hpp"
 #include "../Math/Matrix4.hpp"
-
 #include <cmath>
 
-
+namespace Engine
+{
 Camera::Camera(float fov, float aspect, float nearPlane, float farPlane) :
 	_fov(fov), _aspectRatio(aspect), _nearClip(nearPlane), _farClip(farPlane)
 {
@@ -79,3 +78,4 @@ Vector3 Camera::getUp() const
 {
 	return _upDirection;
 }
+} // namespace Engine

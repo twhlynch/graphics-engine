@@ -3,6 +3,8 @@
 #include "../Math/Matrix4.hpp"
 #include "../Math/Vector3.hpp"
 
+namespace Engine
+{
 class Camera
 {
 public:
@@ -32,3 +34,4 @@ private:
 	float _nearClip;
 	float _farClip;
 };
+} // namespace Engine

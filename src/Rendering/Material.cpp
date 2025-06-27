@@ -1,6 +1,8 @@
 #include "Material.hpp"
 #include "../Rendering/Texture.hpp"
 
+namespace Engine
+{
 Material::Material() :
 	_texture(nullptr), _renderType(Triangles), _wireframe(false), _cullBackface(true)
 {
@@ -61,3 +63,4 @@ void Material::setCullBackface(bool value)
 {
 	_cullBackface = value;
 }
+} // namespace Engine

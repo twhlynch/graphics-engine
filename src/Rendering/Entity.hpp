@@ -7,6 +7,8 @@
 #include "../Rendering/Mesh.hpp"
 #include "../Rendering/Shader.hpp"
 
+namespace Engine
+{
 class Entity
 {
 public:
@@ -51,3 +53,4 @@ private:
 	Quaternion _rotation;
 	Vector3 _scale;
 };
+} // namespace Engine

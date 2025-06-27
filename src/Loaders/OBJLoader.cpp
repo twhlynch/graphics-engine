@@ -1,10 +1,11 @@
 #include "OBJLoader.hpp"
 #include "../Logging.hpp"
-
 #include <fstream>
 #include <iostream>
 #include <sstream>
 
+namespace Engine
+{
 OBJLoader::OBJLoader() {}
 OBJLoader::~OBJLoader() {}
 
@@ -114,3 +115,4 @@ std::vector<float> OBJLoader::reorderVertices(const std::vector<float> &vertices
 
 	return reorderedVertices;
 }
+} // namespace Engine

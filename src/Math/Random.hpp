@@ -3,6 +3,8 @@
 #include <chrono>
 #include <random>
 
+namespace Engine
+{
 template <typename T>
 static T randRange(T min, T max)
 {
@@ -20,3 +22,4 @@ static T randRange(T min, T max)
 	}
 	return T {};
 }
+} // namespace Engine

@@ -15,64 +15,63 @@
 #include "Scene/Controller.hpp"
 #include "UI/BitmapFont.hpp"
 #include "UI/Text.hpp"
-
 #include <GLFW/glfw3.h>
 
 int main()
 {
-	Window *window = new Window(800, 600, "Renderer");
-	Renderer *renderer = new Renderer();
+	Engine::Window *window = new Engine::Window(800, 600, "Engine Demo Scene");
+	Engine::Renderer *renderer = new Engine::Renderer();
 
-	Camera *camera = new Camera(45.0f, 800.0f / 600.0f, 0.1f, 200.0f);
-	camera->setPosition(Vector3(0, 0, 12));
+	Engine::Camera *camera = new Engine::Camera(45.0f, 800.0f / 600.0f, 0.1f, 200.0f);
+	camera->setPosition(Engine::Vector3(0, 0, 12));
 
 	renderer->setCamera(camera);
 
-	Controller *controller = new Controller(camera, window);
+	Engine::Controller *controller = new Engine::Controller(camera, window);
 
-	Shader *shader = new Shader("assets/shaders/fog_vert.glsl", "assets/shaders/fog_frag.glsl");
-	Shader *texturedShader = new Shader("assets/shaders/texture_vert.glsl", "assets/shaders/texture_frag.glsl");
+	Engine::Shader *shader = new Engine::Shader("assets/shaders/fog_vert.glsl", "assets/shaders/fog_frag.glsl");
+	Engine::Shader *texturedShader = new Engine::Shader("assets/shaders/texture_vert.glsl", "assets/shaders/texture_frag.glsl");
 
-	std::vector<Shader *> shaders({texturedShader, shader, shader});
+	std::vector<Engine::Shader *> shaders({texturedShader, shader, shader});
 
-	std::vector<Entity *> entities;
+	std::vector<Engine::Entity *> entities;
 
 	std::string image("fallback.png");
-	Texture *texture = new Texture(image);
+	Engine::Texture *texture = new Engine::Texture(image);
 
-	std::vector<Material *> materialList = {
-		(new Material()),
-		(new Material()),
-		(new Material()),
+	std::vector<Engine::Material *> materialList = {
+		(new Engine::Material()),
+		(new Engine::Material()),
+		(new Engine::Material()),
 	};
 	materialList[1]->setWireframe(true);
-	materialList[2]->setRenderType(Material::RenderType::Points);
+	materialList[2]->setRenderType(Engine::Material::RenderType::Points);
 
-	Mesh *dragon = OBJLoader::load("assets/models/dragon.obj");
+	Engine::Mesh *dragon = Engine::OBJLoader::load("assets/models/dragon.obj");
 	for (size_t i = 0; i < materialList.size(); i++)
 	{
 		materialList[i]->setTexture(texture);
-		Entity *entity = new Entity(dragon, materialList[i], shaders[i]);
-		Vector3 vec(-4.0f + (4 * static_cast<float>(i)), 2.5f, 0.0f);
+		Engine::Entity *entity = new Engine::Entity(dragon, materialList[i], shaders[i]);
+		Engine::Vector3 vec(-4.0f + (4 * static_cast<float>(i)), 2.5f, 0.0f);
 		entity->setPosition(vec);
 		renderer->addEntity(entity, (i == 0));
 		entities.push_back(entity);
 	}
 
-	std::vector<Mesh *> meshList = {
-		Mesh::WithTriangle(),
-		Mesh::WithQuad(),
-		Mesh::WithCircle(),
-		Mesh::WithPyramid(),
-		Mesh::WithCube(),
-		Mesh::WithCylinder(),
+	std::vector<Engine::Mesh *> meshList = {
+		Engine::Mesh::WithTriangle(),
+		Engine::Mesh::WithQuad(),
+		Engine::Mesh::WithCircle(),
+		Engine::Mesh::WithPyramid(),
+		Engine::Mesh::WithCube(),
+		Engine::Mesh::WithCylinder(),
 	};
 	for (size_t i = 0; i < meshList.size(); i++)
 	{
 		for (size_t j = 0; j < materialList.size(); j++)
 		{
-			Entity *entity = new Entity(meshList[i], materialList[j], shaders[j]);
-			Vector3 vec(-5.0f + (2.0f * static_cast<float>(i)), -1.5f * static_cast<float>(j), 0.0f);
+			Engine::Entity *entity = new Engine::Entity(meshList[i], materialList[j], shaders[j]);
+			Engine::Vector3 vec(-5.0f + (2.0f * static_cast<float>(i)), -1.5f * static_cast<float>(j), 0.0f);
 			entity->setPosition(vec);
 			renderer->addEntity(entity);
 			entities.push_back(entity);
@@ -81,10 +80,10 @@ int main()
 
 	for (int i = 0; i < 100; i++)
 	{
-		Entity *entity = new Entity(meshList[4], materialList[0], shaders[0]);
-		Vector3 position(randRange(-1.0f, 1.0f) + 9, randRange(-1.0f, 1.0f) + 2, randRange(-1.0f, 1.0f));
-		Vector3 scale(randRange(0.2f, 0.5f), randRange(0.2f, 0.5f), randRange(0.2f, 0.5f));
-		Quaternion rotation(randRange(-1.0f, 1.0f), randRange(-1.0f, 1.0f), randRange(-1.0f, 1.0f), randRange(-1.0f, 1.0f));
+		Engine::Entity *entity = new Engine::Entity(meshList[4], materialList[0], shaders[0]);
+		Engine::Vector3 position(Engine::randRange(-1.0f, 1.0f) + 9, Engine::randRange(-1.0f, 1.0f) + 2, Engine::randRange(-1.0f, 1.0f));
+		Engine::Vector3 scale(Engine::randRange(0.2f, 0.5f), Engine::randRange(0.2f, 0.5f), Engine::randRange(0.2f, 0.5f));
+		Engine::Quaternion rotation(Engine::randRange(-1.0f, 1.0f), Engine::randRange(-1.0f, 1.0f), Engine::randRange(-1.0f, 1.0f), Engine::randRange(-1.0f, 1.0f));
 		rotation.normalize();
 		entity->setPosition(position);
 		entity->setScale(scale);
@@ -93,22 +92,22 @@ int main()
 		entities.push_back(entity);
 	}
 
-	Ray *ray = new Ray(camera->getPosition(), camera->getForward());
-	Entity *rayVis = ray->getEntityToVisualize();
+	Engine::Ray *ray = new Engine::Ray(camera->getPosition(), camera->getForward());
+	Engine::Entity *rayVis = ray->getEntityToVisualize();
 	ray->setObjects(&entities);
 	renderer->addEntity(rayVis);
-	Mesh *pointMesh = new Mesh({0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f});
+	Engine::Mesh *pointMesh = new Engine::Mesh({0.0f, 0.0f, 0.0f}, {1.0f, 0.0f, 0.0f});
 
-	Shader *particleShader = new Shader("assets/shaders/particle_vert.glsl", "assets/shaders/particle_frag.glsl");
-	ParticleEmitter *particleEmitter = new ParticleEmitter(
-		ParticleOptions {
+	Engine::Shader *particleShader = new Engine::Shader("assets/shaders/particle_vert.glsl", "assets/shaders/particle_frag.glsl");
+	Engine::ParticleEmitter *particleEmitter = new Engine::ParticleEmitter(
+		Engine::ParticleOptions {
 			{0.0f, 0.0f, 1.0f},
 			{0.0f, 0.0f, 0.0f},
 			2.0f,
 			1.0f,
 			{0.6f, 0.2f, 0.4f},
 		},
-		ParticleOptions {
+		Engine::ParticleOptions {
 			{0.0f, 0.0f, 0.8f},
 			{0.0f, 0.0f, 0.0f},
 			3.0f,
@@ -117,23 +116,23 @@ int main()
 		},
 		0.0005f,
 		particleShader);
-	particleEmitter->setPosition(Vector3(10, -3, 0));
-	particleEmitter->setRotation(Quaternion::WithAxisAngle(Vector3(1, 0, 0), radians(90)));
+	particleEmitter->setPosition(Engine::Vector3(10, -3, 0));
+	particleEmitter->setRotation(Engine::Quaternion::WithAxisAngle(Engine::Vector3(1, 0, 0), Engine::radians(90)));
 	particleEmitter->setScale(0.2);
 	renderer->addEntity(particleEmitter);
 	entities.push_back(particleEmitter);
 
-	BitmapFont *font = new BitmapFont("assets/bitmap.txt");
-	Text *text = new Text(font);
+	Engine::BitmapFont *font = new Engine::BitmapFont("assets/bitmap.txt");
+	Engine::Text *text = new Engine::Text(font);
 	text->setText("0123456789\nABCDEFGHIJKLMNOPQRSTUVWXYZ\nabcdefghijklmnopqrstuvwxyz\n!@#$%^&*-+=_(){}[]\\/|<>`,.'\";:");
-	Material *textMaterial = new Material();
+	Engine::Material *textMaterial = new Engine::Material();
 	textMaterial->setCullBackface(false);
-	Entity *textEntity = new Entity(text, textMaterial, shader);
-	textEntity->setPosition(Vector3(2, -5, 0));
+	Engine::Entity *textEntity = new Engine::Entity(text, textMaterial, shader);
+	textEntity->setPosition(Engine::Vector3(2, -5, 0));
 	renderer->addEntity(textEntity);
 	entities.push_back(textEntity);
 
-	Clock *clock = new Clock();
+	Engine::Clock *clock = new Engine::Clock();
 	while (!window->shouldClose())
 	{
 		float delta = clock->getDelta();
@@ -144,22 +143,22 @@ int main()
 
 		renderer->update(delta);
 
-		for (Entity *entity : entities)
+		for (Engine::Entity *entity : entities)
 		{
-			entity->setRotation((entity->getRotation() * Quaternion::WithAxisAngle(Vector3(0, 1, 0), delta)).normalized());
+			entity->setRotation((entity->getRotation() * Engine::Quaternion::WithAxisAngle(Engine::Vector3(0, 1, 0), delta)).normalized());
 		}
 
-		particleEmitter->setRotation((particleEmitter->getRotation() * Quaternion::WithAxisAngle(Vector3(0, 1, 0), delta * 5)).normalized());
+		particleEmitter->setRotation((particleEmitter->getRotation() * Engine::Quaternion::WithAxisAngle(Engine::Vector3(0, 1, 0), delta * 5)).normalized());
 
-		if (Window::isPressing(GLFW_KEY_SPACE))
+		if (Engine::Window::isPressing(GLFW_KEY_SPACE))
 		{
 			ray->set(camera->getPosition(), camera->getForward());
 			*rayVis = *ray->getEntityToVisualize();
 
-			std::vector<Intersection> intersections = ray->cast();
-			for (const Intersection &intersection : intersections)
+			std::vector<Engine::Intersection> intersections = ray->cast();
+			for (const Engine::Intersection &intersection : intersections)
 			{
-				Entity *entity = new Entity(pointMesh, materialList[2], rayVis->getShader());
+				Engine::Entity *entity = new Engine::Entity(pointMesh, materialList[2], rayVis->getShader());
 				entity->setScale(0.1f);
 				entity->setPosition(intersection.point);
 				renderer->addEntity(entity, true);
@@ -171,15 +170,15 @@ int main()
 		window->update();
 	}
 
-	for (Entity *entity : entities)
+	for (Engine::Entity *entity : entities)
 	{
 		delete entity;
 	}
-	for (Material *material : materialList)
+	for (Engine::Material *material : materialList)
 	{
 		delete material;
 	}
-	for (Mesh *mesh : meshList)
+	for (Engine::Mesh *mesh : meshList)
 	{
 		delete mesh;
 	}

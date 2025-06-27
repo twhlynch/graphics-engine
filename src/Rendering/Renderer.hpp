@@ -2,9 +2,10 @@
 
 #include "../Rendering/Entity.hpp"
 #include "../Scene/Camera.hpp"
-
 #include <vector>
 
+namespace Engine
+{
 class Renderer
 {
 public:
@@ -21,3 +22,4 @@ private:
 	std::vector<Entity *> _transparentEntities;
 	Camera *_camera;
 };
+} // namespace Engine

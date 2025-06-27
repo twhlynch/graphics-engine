@@ -1,10 +1,10 @@
 #include "Entity.hpp"
-#include "../Math/Matrix4.hpp"
-
 #include "../Logging.hpp"
-
+#include "../Math/Matrix4.hpp"
 #include <glad/glad.h>
 
+namespace Engine
+{
 Entity::Entity(Mesh *mesh, Material *material, Shader *shader) :
 	_mesh(nullptr), _material(nullptr), _shader(nullptr), _scale(1.0f)
 {
@@ -117,3 +117,4 @@ void Entity::draw()
 
 	_material->draw(_mesh, _shader);
 }
+} // namespace Engine

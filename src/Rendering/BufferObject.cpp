@@ -1,5 +1,7 @@
 #include "BufferObject.hpp"
 
+namespace Engine
+{
 BufferObject::BufferObject() :
 	_vbo(0), _data(nullptr)
 {
@@ -38,3 +40,4 @@ void BufferObject::refresh()
 	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 	glBufferData(GL_ARRAY_BUFFER, static_cast<long>(_data->size()) * static_cast<long>(sizeof(float)), _data->data(), GL_STATIC_DRAW);
 }
+} // namespace Engine

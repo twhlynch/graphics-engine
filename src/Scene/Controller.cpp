@@ -1,10 +1,10 @@
 #include "Controller.hpp"
 #include "../Math/Angles.hpp"
-
 #include <GLFW/glfw3.h>
-
 #include <cmath>
 
+namespace Engine
+{
 Controller::Controller(Camera *camera, Window *window, float speed, float sprintMultiplier, float sensitivity) :
 	_camera(camera), _window(window), _speed(speed), _sprintMultiplier(sprintMultiplier), _sensitivity(sensitivity), _firstMouse(true), _lastX(0), _lastY(0), _yaw(-90.0f), _pitch(0.0f)
 {
@@ -121,3 +121,4 @@ void Controller::processMouse()
 
 	_camera->getTarget() = _camera->getPosition() + front;
 }
+} // namespace Engine

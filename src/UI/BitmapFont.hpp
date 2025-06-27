@@ -1,11 +1,13 @@
 #pragma once
 
+#include "../UI/Font.hpp"
 #include <string>
 
-#include "../UI/Font.hpp"
-
+namespace Engine
+{
 class BitmapFont : public Font
 {
 public:
 	BitmapFont(const std::string &path);
 };
+} // namespace Engine

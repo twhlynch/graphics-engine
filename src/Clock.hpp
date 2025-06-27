@@ -1,7 +1,9 @@
 #pragma once
 
-extern "C" double glfwGetTime();
+#include <chrono>
 
+namespace Engine
+{
 class Clock
 {
 public:
@@ -22,9 +24,11 @@ public:
 	}
 	static float getTime()
 	{
-		return static_cast<float>(glfwGetTime());
+		std::chrono::duration<float> seconds = std::chrono::high_resolution_clock::now().time_since_epoch();
+		return seconds.count();
 	}
 
 private:
 	float _lastTime;
 };
+} // namespace Engine

@@ -2,9 +2,10 @@
 
 #include "../Math/Vector3.hpp"
 #include "../Rendering/Entity.hpp"
-
 #include <vector>
 
+namespace Engine
+{
 struct Intersection
 {
 public:
@@ -33,3 +34,4 @@ private:
 	Vector3 _direction;
 	std::vector<Entity *> *_objects;
 };
+} // namespace Engine

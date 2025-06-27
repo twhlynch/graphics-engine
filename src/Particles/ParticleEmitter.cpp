@@ -1,9 +1,11 @@
-#include "../Particles/ParticleEmitter.hpp"
+#include "ParticleEmitter.hpp"
 #include "../Logging.hpp"
 #include "../Math/Interpolation.hpp"
 #include "../Math/Matrix4.hpp"
 #include "../Math/Random.hpp"
 
+namespace Engine
+{
 ParticleEmitter::ParticleEmitter(ParticleOptions from, ParticleOptions to, float spawnRate, Shader *shader) :
 	Entity(nullptr, nullptr, shader), _from(from), _to(to), _spawnRate(spawnRate), _changed(true)
 {
@@ -165,3 +167,4 @@ void ParticleEmitter::addParticle()
 
 	_changed = true;
 }
+} // namespace Engine

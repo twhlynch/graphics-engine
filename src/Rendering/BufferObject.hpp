@@ -3,6 +3,8 @@
 #include <glad/glad.h>
 #include <vector>
 
+namespace Engine
+{
 class BufferObject
 {
 public:
@@ -19,3 +21,4 @@ private:
 	GLuint _vbo;
 	std::vector<float> *_data;
 };
+} // namespace Engine

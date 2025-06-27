@@ -1,9 +1,10 @@
-#include "../UI/BitmapFont.hpp"
+#include "BitmapFont.hpp"
 #include "../Logging.hpp"
-
 #include <fstream>
 #include <sstream>
 
+namespace Engine
+{
 BitmapFont::BitmapFont(const std::string &path)
 {
 	DEBUG("Loading " << path);
@@ -85,12 +86,12 @@ BitmapFont::BitmapFont(const std::string &path)
 					{
 						std::vector<float> rect = {
 							static_cast<float>(x), -static_cast<float>(y), 0,
-							static_cast<float>(x) + static_cast<float>(width), -static_cast<float>(y)- static_cast<float>(height), 0,
-							static_cast<float>(x), -static_cast<float>(y)- static_cast<float>(height), 0,
+							static_cast<float>(x) + static_cast<float>(width), -static_cast<float>(y) - static_cast<float>(height), 0,
+							static_cast<float>(x), -static_cast<float>(y) - static_cast<float>(height), 0,
 
 							static_cast<float>(x), -static_cast<float>(y), 0,
-							static_cast<float>(x)+ static_cast<float>(width), -static_cast<float>(y), 0,
-							static_cast<float>(x)+ static_cast<float>(width), -static_cast<float>(y)- static_cast<float>(height), 0};
+							static_cast<float>(x) + static_cast<float>(width), -static_cast<float>(y), 0,
+							static_cast<float>(x) + static_cast<float>(width), -static_cast<float>(y) - static_cast<float>(height), 0};
 
 						for (size_t i = 0; i < rect.size(); i++)
 						{
@@ -124,3 +125,4 @@ BitmapFont::BitmapFont(const std::string &path)
 		}
 	}
 }
+} // namespace Engine

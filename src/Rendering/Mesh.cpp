@@ -1,7 +1,8 @@
 #include "Mesh.hpp"
-
 #include <cmath>
 
+namespace Engine
+{
 Mesh::Mesh(const std::vector<float> &vertices, const std::vector<float> &colors, const std::vector<float> &texCoords) :
 	_vertices(vertices), _colors(colors), _texCoords(texCoords)
 {
@@ -289,3 +290,4 @@ Mesh *Mesh::WithCylinder(float radius, float height, size_t segments)
 
 	return new Mesh(vertices);
 }
+} // namespace Engine

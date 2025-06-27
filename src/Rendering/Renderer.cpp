@@ -1,10 +1,9 @@
 #include "Renderer.hpp"
-
 #include "../Logging.hpp"
-
 #include <glad/glad.h>
 
-
+namespace Engine
+{
 Renderer::Renderer() :
 	_camera(nullptr)
 {
@@ -147,3 +146,4 @@ void Renderer::draw()
 
 	glDisable(GL_BLEND);
 }
+} // namespace Engine

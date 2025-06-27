@@ -1,11 +1,11 @@
 #include "Ray.hpp"
-
 #include "../Rendering/Material.hpp"
 #include "../Rendering/Mesh.hpp"
 #include "../Rendering/Shader.hpp"
-
 #include <float.h>
 
+namespace Engine
+{
 Ray::Ray() {}
 Ray::Ray(const Vector3 &position, const Vector3 &direction) :
 	_position(position), _direction(direction.normalized()), _objects(nullptr)
@@ -133,3 +133,4 @@ Entity *Ray::getEntityToVisualize(float length) const
 
 	return entity;
 }
+} // namespace Engine

@@ -1,9 +1,10 @@
 #include "Texture.hpp"
 #include "../Logging.hpp"
-
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image/stb_image.h>
 
+namespace Engine
+{
 Texture::Texture(const std::string &path)
 {
 	glGenTextures(1, &_texture);
@@ -56,3 +57,4 @@ void Texture::use() const
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, _texture);
 }
+} // namespace Engine

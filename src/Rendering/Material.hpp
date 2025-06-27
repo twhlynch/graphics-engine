@@ -3,9 +3,10 @@
 #include "../Rendering/Mesh.hpp"
 #include "../Rendering/Shader.hpp"
 #include "../Rendering/Texture.hpp"
-
 #include <glad/glad.h>
 
+namespace Engine
+{
 class Material
 {
 public:
@@ -41,3 +42,4 @@ private:
 	bool _wireframe;
 	bool _cullBackface;
 };
+} // namespace Engine

@@ -3,6 +3,8 @@
 #include "../Rendering/Window.hpp"
 #include "../Scene/Camera.hpp"
 
+namespace Engine
+{
 class Controller
 {
 public:
@@ -25,3 +27,4 @@ private:
 	double _lastX, _lastY;
 	float _yaw, _pitch;
 };
+} // namespace Engine
