@@ -1,19 +1,17 @@
 #include "Shader.hpp"
+#include "../FileSystem/FileSystem.hpp"
 #include "../Logging.hpp"
-#include <fstream>
-#include <iostream>
-#include <sstream>
 
 namespace Engine
 {
 Shader::Shader(const std::string &vertexPath, const std::string &fragmentPath) :
 	_vertexPath(vertexPath), _fragmentPath(fragmentPath)
 {
-	_lastVertexWrite = std::filesystem::last_write_time(vertexPath);
-	_lastFragmentWrite = std::filesystem::last_write_time(fragmentPath);
-	std::string vs = loadFile(vertexPath);
-	std::string fs = loadFile(fragmentPath);
-	_programID = linkProgram(vs, fs);
+	std::string *vs = FileSystem::read(vertexPath);
+	std::string *fs = FileSystem::read(fragmentPath);
+	_programID = linkProgram(*vs, *fs);
+	delete vs;
+	delete fs;
 }
 
 Shader::~Shader()
@@ -24,41 +22,6 @@ Shader::~Shader()
 void Shader::use() const
 {
 	glUseProgram(_programID);
-}
-
-void Shader::refresh()
-{
-	bool changed = hasChanged(_vertexPath, _lastVertexWrite) || hasChanged(_fragmentPath, _lastFragmentWrite);
-
-	if (changed)
-	{
-		INFO("Shaders changed. Reloading...");
-		GLuint newProgram = linkProgram(loadFile(_vertexPath), loadFile(_fragmentPath));
-
-		if (newProgram)
-		{
-			glDeleteProgram(_programID);
-			_programID = newProgram;
-		}
-	}
-}
-
-std::string Shader::loadFile(const std::string &path)
-{
-	INFO("Loading " << path);
-
-	std::ifstream file(path);
-
-	if (!file)
-	{
-		ERROR("Failed to load: " << path);
-		return "";
-	}
-
-	std::stringstream buffer;
-	buffer << file.rdbuf();
-
-	return buffer.str();
 }
 
 GLuint Shader::compileShader(GLenum type, const std::string &src)
@@ -105,19 +68,6 @@ GLuint Shader::linkProgram(const std::string &vs, const std::string &fs)
 	glDeleteShader(fragment);
 
 	return program;
-}
-
-bool Shader::hasChanged(const std::string &path, std::filesystem::file_time_type &lastTime)
-{
-	auto current = std::filesystem::last_write_time(path);
-
-	if (current != lastTime)
-	{
-		lastTime = current;
-		return true;
-	}
-
-	return false;
 }
 
 GLuint Shader::getProgramID() const

@@ -137,8 +137,6 @@ int main()
 	{
 		float delta = clock->getDelta();
 
-		shader->refresh();
-
 		controller->update(delta);
 
 		renderer->update(delta);

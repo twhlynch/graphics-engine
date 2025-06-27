@@ -1,6 +1,6 @@
 #include "OBJLoader.hpp"
+#include "../FileSystem/FileSystem.hpp"
 #include "../Logging.hpp"
-#include <fstream>
 #include <iostream>
 #include <sstream>
 
@@ -29,20 +29,10 @@ Mesh *OBJLoader::parse(const std::string &content)
 
 Mesh *OBJLoader::load(const std::string &path)
 {
-	INFO("Loading " << path);
-
-	std::ifstream file(path);
-	if (!file.is_open())
-	{
-		ERROR("Failed to load: " << path);
-		return nullptr;
-	}
-	std::stringstream buffer;
-	buffer << file.rdbuf();
-
-	file.close();
-
-	return parse(buffer.str());
+	std::string *data = FileSystem::read(path);
+	Mesh *mesh = parse(*data);
+	delete data;
+	return mesh;
 }
 
 void OBJLoader::parseLine(const std::string &line, std::vector<float> &vertices, std::vector<size_t> &indices)
