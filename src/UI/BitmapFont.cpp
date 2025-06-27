@@ -1,23 +1,16 @@
 #include "BitmapFont.hpp"
-#include "../Logging.hpp"
-#include <fstream>
+#include "../FileSystem/FileSystem.hpp"
 #include <sstream>
 
 namespace Engine
 {
 BitmapFont::BitmapFont(const std::string &path)
 {
-	DEBUG("Loading " << path);
-	std::ifstream file(path);
-	if (!file)
-	{
-		return;
-	}
+	std::string *data = FileSystem::read(path);
 
 	std::stringstream buffer;
-	buffer << file.rdbuf();
-
-	file.close();
+	buffer << *data;
+	delete data;
 
 	std::vector<std::vector<bool>> bitmap;
 

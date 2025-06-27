@@ -1,5 +1,5 @@
 #include "Texture.hpp"
-#include "../Logging.hpp"
+#include "../Logging/Logging.hpp"
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image/stb_image.h>
 
@@ -17,7 +17,7 @@ Texture::Texture(const std::string &path)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
 	int width, height, nrChannels;
-	DEBUG("Loading " << path);
+	INFO("Loading " << path);
 	unsigned char *data = stbi_load(("assets/textures/" + path).c_str(), &width, &height, &nrChannels, 0);
 	if (!data)
 	{

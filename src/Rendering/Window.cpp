@@ -1,5 +1,5 @@
 #include "Window.hpp"
-#include "../Logging.hpp"
+#include "../Logging/Logging.hpp"
 #include <GLFW/glfw3.h>
 
 namespace Engine

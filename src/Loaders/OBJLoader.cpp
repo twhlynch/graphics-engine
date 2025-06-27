@@ -1,6 +1,6 @@
 #include "OBJLoader.hpp"
 #include "../FileSystem/FileSystem.hpp"
-#include "../Logging.hpp"
+#include "../Logging/Logging.hpp"
 #include <iostream>
 #include <sstream>
 

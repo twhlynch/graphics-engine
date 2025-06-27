@@ -1,5 +1,5 @@
 #include "Entity.hpp"
-#include "../Logging.hpp"
+#include "../Logging/Logging.hpp"
 #include "../Math/Matrix4.hpp"
 #include <glad/glad.h>
 

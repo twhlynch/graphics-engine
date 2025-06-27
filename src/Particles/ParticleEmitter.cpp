@@ -1,5 +1,5 @@
 #include "ParticleEmitter.hpp"
-#include "../Logging.hpp"
+#include "../Logging/Logging.hpp"
 #include "../Math/Interpolation.hpp"
 #include "../Math/Matrix4.hpp"
 #include "../Math/Random.hpp"

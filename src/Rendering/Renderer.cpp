@@ -1,5 +1,5 @@
 #include "Renderer.hpp"
-#include "../Logging.hpp"
+#include "../Logging/Logging.hpp"
 #include <glad/glad.h>
 
 namespace Engine

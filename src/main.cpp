@@ -1,6 +1,6 @@
-#include "Clock.hpp"
 #include "Loaders/OBJLoader.hpp"
 #include "Math/Angles.hpp"
+#include "Math/Clock.hpp"
 #include "Math/Quaternion.hpp"
 #include "Math/Random.hpp"
 #include "Math/Ray.hpp"

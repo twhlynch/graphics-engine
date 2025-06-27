@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Logging.hpp"
+#include "../Logging/Logging.hpp"
 #include <fstream>
 #include <sstream>
 #include <string>

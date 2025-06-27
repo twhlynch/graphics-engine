@@ -1,6 +1,6 @@
 #include "Shader.hpp"
 #include "../FileSystem/FileSystem.hpp"
-#include "../Logging.hpp"
+#include "../Logging/Logging.hpp"
 
 namespace Engine
 {
